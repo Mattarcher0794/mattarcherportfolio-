@@ -8,24 +8,24 @@
   --color-border: #2A2A28;
   --color-text-primary: #F2EFE8;
   --color-text-secondary: #A09D96;
-  --color-accent: #C9A96E;
-  --color-accent-subtle: rgba(201, 169, 110, 0.1);
+  --color-accent: #E8E0D0;
+  --color-accent-subtle: rgba(232, 224, 208, 0.08);
 }
 
 /* ─── Tailwind v4 Theme ──────────────────────────────────────────────────── */
 
 @theme inline {
-  /* Colours — mapped from CSS custom properties */
+  /* Colours */
   --color-bg: #0F0F0E;
   --color-surface: #1A1A18;
   --color-border: #2A2A28;
   --color-text-primary: #F2EFE8;
   --color-text-secondary: #A09D96;
-  --color-accent: #C9A96E;
-  --color-accent-subtle: rgba(201, 169, 110, 0.1);
+  --color-accent: #E8E0D0;
+  --color-accent-subtle: rgba(232, 224, 208, 0.08);
 
   /* Fonts — CSS variables injected by next/font in layout.tsx */
-  --font-display: var(--font-cormorant);
+  --font-display: var(--font-fira);
   --font-body: var(--font-dm-sans);
   --font-mono: var(--font-dm-mono);
 }

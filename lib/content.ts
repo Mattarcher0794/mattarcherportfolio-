@@ -10,8 +10,7 @@ export interface SiteContent {
 
 export const content: Record<GeoVariant, SiteContent> = {
   AU: {
-    heroPositioningLine:
-      'Principal PM based in London. Relocating to Sydney, September 2026 — open to conversations now.',
+    heroPositioningLine: 'PRINCIPAL PRODUCT MANAGER. SYDNEY.',
     aboutCTA:
       "I'm relocating to Sydney in September 2026 and actively talking to teams about what's next. If you're building something worth working on, I'd love to hear about it.",
     contactHeadline: "Let's talk Sydney.",
@@ -21,8 +20,7 @@ export const content: Record<GeoVariant, SiteContent> = {
       'Principal PM relocating to Sydney, September 2026. Led Wagamama Soul Club, HCA Healthcare, Subway. Open to conversations now.',
   },
   DEFAULT: {
-    heroPositioningLine:
-      'Principal PM leading product and design teams across consumer, health, and enterprise.',
+    heroPositioningLine: 'PRINCIPAL PRODUCT MANAGER. LONDON.',
     aboutCTA:
       'Based in London. Open to senior PM roles and consulting engagements.',
     contactHeadline: "Let's work together.",

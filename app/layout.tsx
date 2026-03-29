@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
-import { Cormorant_Garamond, DM_Sans, DM_Mono } from 'next/font/google'
+import { Fira_Code, DM_Sans, DM_Mono } from 'next/font/google'
 import './globals.css'
 
-const cormorant = Cormorant_Garamond({
-  variable: '--font-cormorant',
+const firaCode = Fira_Code({
+  variable: '--font-fira',
   subsets: ['latin'],
-  weight: ['300', '600'],
+  weight: ['700'],
   display: 'swap',
 })
 
@@ -53,7 +53,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${cormorant.variable} ${dmSans.variable} ${dmMono.variable} h-full`}
+      className={`${firaCode.variable} ${dmSans.variable} ${dmMono.variable} h-full`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
