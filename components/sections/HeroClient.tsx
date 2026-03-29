@@ -113,7 +113,7 @@ export default function HeroClient({ positioningLine }: HeroClientProps) {
           aria-label="Matt Archer"
           className="select-none mb-0 font-display font-bold text-[clamp(3.5rem,12vw,7rem)] uppercase tracking-[-0.02em] leading-[0.82]"
         >
-          <div className="block">
+          <div className="block" style={{ marginBottom: '-0.05em' }}>
             {MATT_LETTERS.map((char, i) => (
               <AnimatedLetter
                 key={`matt-${i}`}
