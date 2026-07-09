@@ -1,30 +1,56 @@
 {
   "default": {
-    "heroTag": "Available for select work · 2026",
+    "heroTag": "Available for work · Oct 2026",
     "heroLocation": "London, UK",
     "contactHeadlineLead": "Let's work",
     "contactHeadlineEm": "together.",
     "contactSub": "Whether you're looking for a senior PM or a consulting partner, I'd love to hear what you're building.",
     "metaDescription": "Principal Product Manager with 9+ years across B2C and B2B at scale. Led product at Lloyds Banking Group, Wagamama and HCA Healthcare. Based in London.",
     "contactFoot": [
-      { "k": "Email", "v": "archermatthew35@gmail.com", "href": "mailto:archermatthew35@gmail.com" },
-      { "k": "Based in", "v": "London, UK", "href": "" },
-      { "k": "Availability", "v": "Select work · 2026", "href": "" },
-      { "k": "Reply within", "v": "48 hours", "href": "" }
+      {
+        "k": "Email",
+        "v": "archermatthew35@gmail.com",
+        "href": "mailto:archermatthew35@gmail.com"
+      },
+      {
+        "k": "Based in",
+        "v": "London, UK"
+      },
+      {
+        "k": "Availability",
+        "v": "Select work · 2026"
+      },
+      {
+        "k": "Reply within",
+        "v": "48 hours"
+      }
     ]
   },
   "au": {
-    "heroTag": "Open to new roles · Oct 2026",
+    "heroTag": "Available for work · Oct 2026",
     "heroLocation": "Sydney, NSW",
     "contactHeadlineLead": "Let's talk",
     "contactHeadlineEm": "Sydney.",
     "contactSub": "I'm relocating to Sydney in September 2026 and talking to teams now about what's next. If you're building something worth working on, I'd love to hear about it.",
     "metaDescription": "Principal Product Manager relocating to Sydney, September 2026. Led product at Lloyds Banking Group, Wagamama and HCA Healthcare. Open to conversations now.",
     "contactFoot": [
-      { "k": "Email", "v": "archermatthew35@gmail.com", "href": "mailto:archermatthew35@gmail.com" },
-      { "k": "Based in", "v": "London, UK", "href": "" },
-      { "k": "Moving to", "v": "Sydney · Sept '26", "href": "" },
-      { "k": "Reply within", "v": "48 hours", "href": "" }
+      {
+        "k": "Email",
+        "v": "archermatthew35@gmail.com",
+        "href": "mailto:archermatthew35@gmail.com"
+      },
+      {
+        "k": "Based in",
+        "v": "London, UK"
+      },
+      {
+        "k": "Moving to",
+        "v": "Sydney · Sept '26"
+      },
+      {
+        "k": "Reply within",
+        "v": "48 hours"
+      }
     ]
   }
 }
