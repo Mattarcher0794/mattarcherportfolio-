@@ -111,7 +111,7 @@ export default function HeroClient({ positioningLine }: HeroClientProps) {
         {/* Name treatment */}
         <h1
           aria-label="Matt Archer"
-          className="select-none mb-0 font-display font-bold text-[clamp(3.5rem,12vw,7rem)] uppercase tracking-[-0.02em] leading-[0.82]"
+          className="select-none mb-0 font-display font-bold text-[clamp(2.975rem,10.2vw,5.95rem)] uppercase tracking-[-0.02em] leading-[0.82]"
         >
           <div className="block" style={{ marginBottom: '-0.05em' }}>
             {MATT_LETTERS.map((char, i) => (
