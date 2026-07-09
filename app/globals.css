@@ -1251,6 +1251,20 @@ footer .row {
   transform: none;
 }
 
+/* ─── 404 ────────────────────────────────────────────────────────────────── */
+
+.not-found {
+  min-height: 100vh;
+  justify-content: center;
+}
+.not-found .hero-body {
+  margin-top: 20px;
+}
+.not-found .cta-row {
+  margin-top: 24px;
+  margin-bottom: 0;
+}
+
 .cursor-follow {
   position: fixed;
   pointer-events: none;
