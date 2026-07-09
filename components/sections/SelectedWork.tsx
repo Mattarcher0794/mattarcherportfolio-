@@ -1,7 +1,8 @@
 import Link from 'next/link'
-import { caseStudies } from '@/lib/caseStudies'
+import { getCaseStudies } from '@/lib/caseStudies'
 
-export default function SelectedWork() {
+export default async function SelectedWork() {
+  const caseStudies = await getCaseStudies()
   return (
     <section className="section" id="work" aria-label="Selected work">
       <div className="wrap">

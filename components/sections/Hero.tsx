@@ -1,35 +1,7 @@
 import { headers } from 'next/headers'
 import Link from 'next/link'
 import { getContent } from '@/lib/content'
-
-interface HeroStat {
-  target: number
-  prefix: string
-  suffix: string
-  label: string
-}
-
-const heroStats: HeroStat[] = [
-  {
-    target: 5.8,
-    prefix: '£',
-    suffix: 'M+',
-    label: 'Generated in new lending, month one at Lloyds',
-  },
-  {
-    target: 1,
-    prefix: '',
-    suffix: 'M+',
-    label: 'App signups driven in 9 months at Wagamama',
-  },
-  {
-    target: 30,
-    prefix: '',
-    suffix: '%',
-    label: 'B2C growth, year one at HCA Healthcare',
-  },
-  { target: 9, prefix: '', suffix: '+', label: 'Years leading product teams' },
-]
+import { getHeroStats, type HeroStat } from '@/lib/siteData'
 
 function formatStat({ target, prefix, suffix }: HeroStat): string {
   const decimals = target % 1 !== 0 ? 1 : 0
@@ -39,7 +11,7 @@ function formatStat({ target, prefix, suffix }: HeroStat): string {
 export default async function Hero() {
   const headersList = await headers()
   const country = headersList.get('x-user-country')
-  const site = getContent(country)
+  const [site, heroStats] = await Promise.all([getContent(country), getHeroStats()])
 
   return (
     <section className="hero" id="top" aria-label="Introduction">

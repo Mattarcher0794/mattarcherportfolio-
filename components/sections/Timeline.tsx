@@ -1,7 +1,8 @@
 import { Fragment } from 'react'
-import { experience } from '@/lib/experience'
+import { getExperience } from '@/lib/experience'
 
-export default function Timeline() {
+export default async function Timeline() {
+  const experience = await getExperience()
   return (
     <section className="section" id="experience" aria-label="Experience">
       <div className="wrap">

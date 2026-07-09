@@ -4,7 +4,7 @@ import { getContent } from '@/lib/content'
 export default async function Contact() {
   const headersList = await headers()
   const country = headersList.get('x-user-country')
-  const site = getContent(country)
+  const site = await getContent(country)
 
   return (
     <section className="section" id="contact" aria-label="Contact">
