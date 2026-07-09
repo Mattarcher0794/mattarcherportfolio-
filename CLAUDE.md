@@ -170,32 +170,34 @@ If geo detection fails or country is unknown → always serve the DEFAULT (UK) v
 
 ## Content Architecture
 
-### `/lib/content.ts`
-Single source of truth for geo-targeted copy. When copy needs updating, **only this file changes** — no component edits required.
+**Content is managed via Keystatic** (git-backed, `keystatic.config.ts`) — see
+`docs/architecture.md` for the rationale. Content lives as JSON in `content/`
+(edited through the `/keystatic` admin UI, committed to the repo) and is read at
+**build time** via `@keystatic/core/reader` (`lib/reader.ts`). The `lib/*.ts`
+files are now the **typed read layer**, not the data itself.
 
-```typescript
-export type GeoVariant = 'AU' | 'DEFAULT'
+| Content | File(s) | Read via |
+|---------|---------|----------|
+| Geo copy (AU/DEFAULT) | `content/site-copy.json` | `lib/content.ts` → `getContent(country)` |
+| Case studies | `content/work/*.json` | `lib/caseStudies.ts` → `getCaseStudies()` |
+| Experience | `content/experience/*.json` | `lib/experience.ts` → `getExperience()` |
+| Hero stats, Skills, Brands | `content/{hero-stats,skills,brands}.json` | `lib/siteData.ts` |
 
-export const content: Record<GeoVariant, SiteContent> = {
-  AU: {
-    heroPositioningLine: "Principal PM based in London. Relocating to Sydney, September 2026 — open to conversations now.",
-    aboutCTA: "I'm relocating to Sydney in September 2026 and actively talking to teams about what's next. If you're building something worth working on, I'd love to hear about it.",
-    contactHeadline: "Let's talk Sydney.",
-    contactSubline: "I'm relocating to Sydney in September 2026. Happy to connect now ahead of arrival.",
-    metaDescription: "Principal PM relocating to Sydney, September 2026. Led Wagamama Soul Club, HCA Healthcare, Subway. Open to conversations now.",
-  },
-  DEFAULT: {
-    heroPositioningLine: "Principal PM leading product and design teams across consumer, health, and enterprise.",
-    aboutCTA: "Based in London. Open to senior PM roles and consulting engagements.",
-    contactHeadline: "Let's work together.",
-    contactSubline: "Whether you're looking for a senior PM or a consulting partner, I'd love to hear what you're building.",
-    metaDescription: "Principal PM with 8+ years building consumer products. Led Wagamama Soul Club, HCA Healthcare, Subway. Based in London.",
-  }
-}
-```
+Rules that still hold:
+- **Data-only Keystatic entries are single `.json` files** (`content/work/wagamama.json`),
+  not `<slug>/index.json` directories.
+- **Reader functions are async** — the section components that consume them are
+  async server components. Never fetch content on the client.
+- **Geo logic stays in code.** `getContent` picks AU vs DEFAULT and enforces the
+  fail-safe-to-UK rule; the CMS only stores the two copy sets as `default` + `au`
+  field groups. The privacy guarantee never lives in the CMS.
+- Updating copy/metrics: edit in `/keystatic` (or the JSON directly) → commit →
+  redeploy. No component edits.
 
-### `/lib/caseStudies.ts`
-All case study data as typed TypeScript objects. Case study pages import from here — no hardcoded content in page components.
+> **Deploy note:** the admin runs in Keystatic `local` mode (edits files on disk).
+> For the *deployed* admin at `mattarcher.me/keystatic`, switch `storage` to
+> `github` in `keystatic.config.ts` and connect the GitHub app — a follow-up that
+> needs the owner's GitHub authorisation.
 
 ---
 

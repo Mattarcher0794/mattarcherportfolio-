@@ -1,13 +1,7 @@
-const logos = [
-  'Lloyds Banking Group',
-  'wagamama',
-  'HCA',
-  'SUBWAY',
-  'British Airways',
-  'AND.',
-]
+import { getBrands } from '@/lib/siteData'
 
-export default function Logos() {
+export default async function Logos() {
+  const brands = await getBrands()
   return (
     <section className="section" id="brands" aria-label="Brands">
       <div className="wrap">
@@ -16,10 +10,10 @@ export default function Logos() {
           Good <em>company.</em>
         </h2>
         <div className="logo-grid">
-          {logos.map((logo, i) => (
-            <div className="logo-cell" key={logo}>
+          {brands.map((brand, i) => (
+            <div className="logo-cell" key={brand.logo}>
               <span className="index">{String(i + 1).padStart(2, '0')}</span>
-              {logo}
+              {brand.logo}
             </div>
           ))}
         </div>

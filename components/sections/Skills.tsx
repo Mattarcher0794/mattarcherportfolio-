@@ -1,43 +1,7 @@
-interface SkillColumn {
-  heading: string
-  skills: Array<{ label: string; ai?: boolean }>
-}
+import { getSkills } from '@/lib/siteData'
 
-const columns: SkillColumn[] = [
-  {
-    heading: 'Product craft',
-    skills: [
-      { label: 'Discovery & user research' },
-      { label: 'Roadmapping' },
-      { label: 'Experimentation & CRO' },
-      { label: 'Agile delivery' },
-      { label: 'Go-to-market' },
-      { label: 'Stakeholder management' },
-      { label: 'Coaching & mentoring' },
-    ],
-  },
-  {
-    heading: 'AI & methods',
-    skills: [
-      { label: 'GenAI product development', ai: true },
-      { label: 'Spec-driven development' },
-      { label: 'AI-assisted workflows' },
-    ],
-  },
-  {
-    heading: 'Industry',
-    skills: [
-      { label: 'Financial services' },
-      { label: 'Retail & loyalty' },
-      { label: 'Healthtech' },
-      { label: 'QSR' },
-      { label: 'Public sector' },
-      { label: 'B2C & B2B' },
-    ],
-  },
-]
-
-export default function Skills() {
+export default async function Skills() {
+  const columns = await getSkills()
   return (
     <section className="section" id="skills" aria-label="Skills and expertise">
       <div className="wrap">

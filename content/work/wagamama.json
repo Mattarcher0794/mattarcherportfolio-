@@ -1,0 +1,20 @@
+{
+  "title": "Wagamama",
+  "order": 2,
+  "index": "02",
+  "company": "Wagamama · Loyalty & App",
+  "period": "",
+  "titleLead": "A loyalty app that hit",
+  "titleEm": "№1 on iOS at launch.",
+  "description": "I led a cross-functional team of 30+ from inception through strategy, build and launch of a consumer loyalty proposition and mobile app — owning discovery, proposition design and the loyalty mechanic itself, including a web-wrapped payment flow.",
+  "tags": ["Consumer", "Loyalty", "iOS / Android", "CRO"],
+  "panelVariant": "moss",
+  "panelLabel": "Signups · First 9 months",
+  "dominant": "1",
+  "dominantEm": "M",
+  "dominantCaption": "people signed up — and ranked №1 iOS app in Food & Drink at launch.",
+  "secondary": [
+    { "value": "№1", "label": "iOS Food & Drink" },
+    { "value": "+58%", "label": "Visit frequency, post-launch" }
+  ]
+}

@@ -1,32 +1,26 @@
 import { Fragment } from 'react'
+import { getBrands } from '@/lib/siteData'
 
-const brands = [
-  'LLOYDS BANKING GROUP',
-  'WAGAMAMA',
-  'HCA HEALTHCARE',
-  'BRITISH AIRWAYS',
-  'SUBWAY',
-  'AND DIGITAL',
-]
-
-function Track() {
+function Track({ names }: { names: string[] }) {
   return (
     <span>
-      {brands.map((brand) => (
-        <Fragment key={brand}>
-          {brand} <span className="sep">/</span>{' '}
+      {names.map((name) => (
+        <Fragment key={name}>
+          {name} <span className="sep">/</span>{' '}
         </Fragment>
       ))}
     </span>
   )
 }
 
-export default function Marquee() {
+export default async function Marquee() {
+  const brands = await getBrands()
+  const names = brands.map((b) => b.marquee)
   return (
     <div className="marquee" aria-hidden="true">
       <div className="marquee-track">
-        <Track />
-        <Track />
+        <Track names={names} />
+        <Track names={names} />
       </div>
     </div>
   )

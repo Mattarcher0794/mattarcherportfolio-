@@ -41,7 +41,7 @@ const jetbrains = JetBrains_Mono({
 export async function generateMetadata(): Promise<Metadata> {
   const headersList = await headers()
   const country = headersList.get('x-user-country')
-  const site = getContent(country)
+  const site = await getContent(country)
 
   const title = 'Matt Archer — Principal Product Manager'
 

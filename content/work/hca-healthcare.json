@@ -1,0 +1,20 @@
+{
+  "title": "HCA Healthcare",
+  "order": 3,
+  "index": "03",
+  "company": "HCA Healthcare · Primary Care",
+  "period": "",
+  "titleLead": "Zero to one on",
+  "titleEm": "private healthcare's digital front door.",
+  "description": "I ran end-to-end patient discovery, researching directly with patients to identify acquisition funnel pain-points and shape a refined primary care proposition — then owned the full roadmap from zero to one across web and native app, expanding into corporate markets.",
+  "tags": ["Healthcare", "Zero-to-one", "Native + Web", "B2B expansion"],
+  "panelVariant": "peach",
+  "panelLabel": "B2C growth · Year one",
+  "dominant": "+30",
+  "dominantEm": "%",
+  "dominantCaption": "growth in year one, then expanded into corporate healthcare markets.",
+  "secondary": [
+    { "value": "0→1", "label": "Web + native, from scratch" },
+    { "value": "2", "label": "Markets: self-pay + corporate" }
+  ]
+}

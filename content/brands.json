@@ -1,0 +1,10 @@
+{
+  "items": [
+    { "logo": "Lloyds Banking Group", "marquee": "LLOYDS BANKING GROUP" },
+    { "logo": "wagamama", "marquee": "WAGAMAMA" },
+    { "logo": "HCA", "marquee": "HCA HEALTHCARE" },
+    { "logo": "SUBWAY", "marquee": "SUBWAY" },
+    { "logo": "British Airways", "marquee": "BRITISH AIRWAYS" },
+    { "logo": "AND.", "marquee": "AND DIGITAL" }
+  ]
+}
