@@ -38,42 +38,55 @@ Every component, every layout decision, every typographic choice must feel like 
 
 ## Design System
 
+> **Adopted direction: "Bold Merge" (Direction 03B).** As of July 2026 the site
+> uses a warm, light editorial palette — not the earlier dark theme. The full,
+> class-based design system lives in `app/globals.css`; components emit those
+> semantic class names (`.hero`, `.case`, `.tl-row`, etc.) rather than
+> re-deriving styles. Always use CSS custom properties for colour — never
+> hardcode hex values in components.
+
 ### Colours
-Always use CSS custom properties. Never hardcode hex values in components.
 
 ```css
---color-bg: #0F0F0E;
---color-surface: #1A1A18;
---color-border: #2A2A28;
---color-text-primary: #F2EFE8;
---color-text-secondary: #A09D96;
---color-accent: #C9A96E;
---color-accent-subtle: rgba(201, 169, 110, 0.1);
+--bg: #F7EDE4;          /* warm ivory page background */
+--surface: #FFFCF9;     /* cards / raised surfaces */
+--ink: #241D2E;         /* primary text + dark panels */
+--ink-2: #3C3248;
+--ink-dim: #544869;
+--ink-mute: #9C7E62;
+--rule: rgba(60,50,72,0.14);
+--rule-2: rgba(60,50,72,0.22);
+--peach: #DDA688;       /* soft accent / blobs */
+--sand: #E8C9AE;        /* hover fill */
+--moss: #6B7A4F;        /* primary action accent */
+--moss-deep: #566740;
+--terracotta: #B5654A;  /* editorial serif accent */
+--terracotta-soft: rgba(181,101,74,0.1);
 ```
 
-These must be defined in `globals.css` and extended in `tailwind.config.ts`.
+These are defined in `app/globals.css` (`:root`), with a subset exposed to
+Tailwind via `@theme inline`. There is no `tailwind.config.ts` — this project
+uses Tailwind v4's CSS-first config.
 
 ### Typography
-All fonts loaded via `next/font/google`. Never use system fonts or generic fallbacks as primary fonts.
+All fonts loaded via `next/font/google` in `app/layout.tsx`. Never use system fonts or generic fallbacks as primary fonts.
 
-| Role | Font | Weights |
+| Role | Font | CSS var |
 |------|------|---------|
-| Display / hero headlines | Cormorant Garamond | 300, 600 |
-| Section headings | Cormorant Garamond | 600 |
-| Body | DM Sans | 300, 400 |
-| Labels / tags / nav | DM Sans | 500 |
-| Stats / metrics | DM Mono | 400 |
+| Display / headlines / stats | Bricolage Grotesque (800) | `--display` |
+| Body / labels / nav | Hanken Grotesk (400–700) | `--sans` |
+| Editorial accents (italic) | Instrument Serif | `--serif` |
+| Mono / tags / metadata | JetBrains Mono | `--mono` |
 
 ### Spacing
 Base unit is 4px. Use Tailwind's spacing scale throughout. No arbitrary pixel values unless absolutely necessary and commented.
 
 ### Animation Rules
-- All scroll-triggered reveals: `opacity 0→1` + `translateY 20px→0`, duration `600ms`, easing `ease-out`
-- Stagger sibling elements: `100ms` delay between each
+- Scroll-triggered reveals: `opacity 0→1` + `translateY 20px→0`, `700ms`, `cubic-bezier(.2,.7,.2,1)` (the `.reveal` / `.reveal.in` classes in `globals.css`)
 - Hover transitions: `200ms ease`
-- Page transitions: `300ms fade`
-- **Always** check `prefers-reduced-motion` — if set, disable all animations
-- Use Framer Motion's `useReducedMotion()` hook
+- Organic "blob" shapes animate via the `blobPulse` keyframe
+- **Always** respect `prefers-reduced-motion` — when set, reveals resolve instantly and the cursor blob, hero parallax and stat count-up are disabled
+- Client-side behaviour (scroll-reveal, cursor-follow blob, hero parallax, animated stat counters) is centralised in `components/ui/Interactions.tsx`, a single progressive-enhancement layer. Section components stay server-rendered and fully visible without JS. Framer Motion remains available but the Bold Merge interactions are lightweight vanilla + IntersectionObserver.
 
 ---
 
@@ -91,34 +104,35 @@ Base unit is 4px. Use Tailwind's spacing scale throughout. No arbitrary pixel va
 │   └── not-found.tsx       # 404 page
 ├── components/
 │   ├── layout/
-│   │   ├── Navigation.tsx
+│   │   ├── Navigation.tsx   # Fixed nav with scroll-border state
 │   │   └── Footer.tsx
-│   ├── sections/           # Homepage sections
-│   │   ├── Hero.tsx
+│   ├── sections/           # Homepage sections (server components)
+│   │   ├── Hero.tsx         # Reads geo; hero stats + blobs
+│   │   ├── Marquee.tsx      # Scrolling brand ticker
 │   │   ├── About.tsx
-│   │   ├── SelectedWork.tsx
+│   │   ├── SelectedWork.tsx # Maps lib/caseStudies.ts
 │   │   ├── Skills.tsx
-│   │   ├── Timeline.tsx
+│   │   ├── Timeline.tsx     # Maps lib/experience.ts
 │   │   ├── Logos.tsx
-│   │   └── Contact.tsx
-│   ├── work/               # Case study page components
-│   │   ├── CaseStudyHero.tsx
-│   │   ├── CaseStudyMetrics.tsx
-│   │   └── CaseStudyNav.tsx
-│   └── ui/                 # Primitives (buttons, tags, etc.)
-│       ├── Button.tsx
-│       └── Tag.tsx
+│   │   └── Contact.tsx      # Reads geo
+│   └── ui/
+│       └── Interactions.tsx # Client PE layer (reveal, cursor, parallax, counters)
 ├── lib/
 │   ├── content.ts          # ALL geo-targeted copy lives here
-│   └── caseStudies.ts      # All case study data lives here
+│   ├── caseStudies.ts      # Homepage case-study card data
+│   └── experience.ts       # Timeline / experience entries
+├── app/
+│   ├── globals.css         # Design tokens + full class-based design system
+│   └── page.tsx            # Homepage (long scroll)
 ├── public/
-│   ├── matt-archer-cv.pdf  # CV — direct download
-│   └── logos/              # Brand logo SVGs (monochrome)
-├── middleware.ts            # Geo-targeting logic
-├── globals.css             # CSS custom properties + base styles
-├── tailwind.config.ts      # Design tokens extended into Tailwind
-└── PRD.md                  # Source of truth for all product decisions
+│   └── matt-archer-cv.pdf  # CV — direct download
+├── proxy.ts                 # Geo-targeting (Next 16 proxy; forwards x-user-country)
+└── PRD.md                  # Product-decision reference
 ```
+
+> Note: case-study detail pages (`app/work/<slug>/page.tsx`) and their
+> components are **not yet built** — `SelectedWork` links to `/work/<slug>`.
+> Brand logos are currently rendered as styled text (no SVG assets yet).
 
 ---
 
@@ -127,21 +141,25 @@ Base unit is 4px. Use Tailwind's spacing scale throughout. No arbitrary pixel va
 This is a **privacy-critical feature**. Matt's current employer must not see AU-targeted content.
 
 ### How it works
-`middleware.ts` reads `request.geo.country` (Vercel built-in). It sets a cookie or header that the page reads server-side to determine which content variant to serve.
+`proxy.ts` (Next.js 16 renamed middleware → proxy) reads Vercel's
+`x-vercel-ip-country` request header and forwards it as `x-user-country` **on the
+request headers** (via `NextResponse.next({ request: { headers } })`) so server
+components can read it through `headers()`. Setting it only on the response is
+invisible server-side — a subtle bug to avoid.
 
 ### Content
 **All geo-targeted copy lives in `/lib/content.ts` only.** Never hardcode geo-specific strings in components. Always import from `content.ts`.
 
 ```typescript
-// middleware.ts — pattern to follow
+// proxy.ts — pattern to follow
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-export function middleware(request: NextRequest) {
-  const country = request.geo?.country || 'DEFAULT'
-  const response = NextResponse.next()
-  response.headers.set('x-user-country', country)
-  return response
+export function proxy(request: NextRequest) {
+  const country = request.headers.get('x-vercel-ip-country') ?? 'DEFAULT'
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set('x-user-country', country)
+  return NextResponse.next({ request: { headers: requestHeaders } })
 }
 ```
 
@@ -185,7 +203,7 @@ All case study data as typed TypeScript objects. Case study pages import from he
 
 1. **TypeScript always.** Every component has explicit prop types. No `any`.
 
-2. **Custom-first.** Build components from scratch using Tailwind + CSS variables. Do not reach for a UI library to solve a visual problem.
+2. **Custom-first.** Build components from scratch using the `globals.css` design-system classes + CSS variables (Tailwind utilities are fine for one-off layout). Do not reach for a UI library to solve a visual problem.
 
 3. **shadcn/ui is permitted** for headless behaviour primitives (buttons, dialogs, etc.) — but restyle them completely to match the design system. Never use shadcn defaults.
 
@@ -201,43 +219,40 @@ All case study data as typed TypeScript objects. Case study pages import from he
 
 9. **Co-locate component logic.** Hooks and helpers used only by one component live in the same file or a sibling file.
 
-10. **Dark mode is the only mode.** No light/dark toggle. No `dark:` Tailwind variants needed — the site is always dark.
+10. **One mode only — the warm light "Bold Merge" theme.** No light/dark toggle, no `dark:` variants. The site is always the ivory palette above. (This supersedes the project's original dark-only direction.)
 
 ---
 
 ## Section-by-Section Build Rules
 
 ### Hero
-- No vanity stats or metric callouts in the hero
-- The hero communicates who Matt is, not what he's achieved — outcomes live in the case study cards
-- One clear positioning line (geo-targeted), one intro sentence weaving in AI fluency naturally
-- Two CTAs: "View my work" (smooth scroll to #work) and "Download CV" (direct PDF download)
-- Subtle animated scroll indicator at bottom
+- Big uppercase name in Bricolage, "Archer." accented in terracotta
+- Geo-targeted pill (`heroTag`) + role line with geo-targeted location (`heroLocation`)
+- **Four animated stat counters** are part of the hero (Lloyds £5.8M, Wagamama 1M+, HCA 30%, 9+ yrs). Counters animate on load, respect reduced motion, and render their final value server-side for no-JS. *(This reverses the original "no stats in hero" rule — Bold Merge leads with proof.)*
+- Positioning line + supporting paragraph in the two-column `hero-bottom`
+- Two CTAs: "View my work" (scroll to #work) and "Download CV" (direct PDF)
+- Organic peach/terracotta blobs with pointer parallax
 
 ### Case Study Cards
-- Always show: company logo, project name, one-line description, outcome stats (3 max), industry tags
-- Logo treatment: full colour logo on dark surface, clean and simple
-- Stats must be immediately readable — use DM Mono, accent colour for numbers
+- Two-panel card: left = index, company, headline (serif accent on the emphasised clause), description, tags, "Read case study"; right = a bold metrics panel (`dominant` figure + caption + two secondary stats)
+- Panel colour rotates per card via `panelVariant`: `ink` / `moss` / `peach`
+- Data lives in `lib/caseStudies.ts` — three cards: **Lloyds Banking Group**, **Wagamama**, **HCA Healthcare** (Subway now lives in the timeline, not a headline card)
 - Card must communicate the outcome without the user clicking
 
 ### Experience Timeline
-- This is a **design moment** — it must be beautiful, not just functional
-- Vertical layout, year markers, animated on scroll
-- Each entry: company, title, date range, 1–2 sentence context (no bullet points)
-- Key projects nested under roles (Wagamama, HCA under Principal PM)
-- Accent colour used on timeline nodes or line — deliberate, not decorative
+- A **design moment** — three-column rows (date / role+company / projects), hover slides the row and grows a moss node
+- Current role flagged with a `· NOW` marker and tinted row
+- Data lives in `lib/experience.ts`; projects render in the Instrument Serif italic
 
 ### Brand Logos
-- Monochrome / reduced opacity treatment on dark background
-- SVG format only (no rasterised PNGs)
-- Logos: Wagamama, HCA Healthcare, Subway, British Airways, Thomas Cook, AND Digital
-- Mobile: wraps to 2 rows naturally
+- Bordered grid of cells; brand name styled in Bricolage, hover fills moss
+- Currently rendered as **styled text** (SVG assets are a follow-up)
+- Logos: Lloyds Banking Group, Wagamama, HCA, Subway, British Airways, AND Digital
 
 ### Skills Section
-- AI-assisted product development must be explicitly listed — not buried
-- Organised into two groups: Skills and Industries
-- No percentage bars, no star ratings — these are patronising and inaccurate
-- Use clean tag/pill components
+- AI-assisted product development must be explicitly listed — the `GenAI product development` pill gets the serif-italic `.ai` accent treatment
+- Three columns: Product craft / AI & methods / Industry
+- No percentage bars, no star ratings — clean tag/pill components only
 
 ### Contact Section
 - Simple. No form in v1.
@@ -291,13 +306,12 @@ All case study data as typed TypeScript objects. Case study pages import from he
 - **Do not** use `Inter`, `Roboto`, `Arial`, or any system font as a primary typeface
 - **Do not** use purple gradients or generic hero backgrounds
 - **Do not** use percentage bars or star ratings for skills
-- **Do not** put metric callouts in the hero section
 - **Do not** write case study content in third person or agency voice
 - **Do not** use the word "passionate" anywhere on the site
 - **Do not** hardcode geo-targeted copy in components — always use `content.ts`
 - **Do not** use `<img>` tags
 - **Do not** introduce new dependencies without a clear reason
-- **Do not** create a light mode
+- **Do not** re-introduce a dark theme or a light/dark toggle — the warm Bold Merge palette is the only mode
 - **Do not** add Calendly — it is not required at any version
 
 ---
@@ -360,4 +374,9 @@ Do not skip steps. Do not build multiple sections in one session without committ
 
 ---
 
-*Last updated: March 2026. Source of truth for all product decisions: `PRD.md`.*
+*Last updated: July 2026 — adopted the "Bold Merge" design direction (warm light
+theme, Bricolage/Instrument Serif/Hanken/JetBrains Mono, hero stats, Lloyds as the
+headline case study). The homepage is fully built. `PRD.md` predates this pivot and
+still describes the earlier dark direction — treat this CLAUDE.md as authoritative
+for design/build decisions until the PRD is refreshed. Follow-ups: case-study detail
+pages, SVG brand logos, PRD refresh.*

@@ -6,7 +6,12 @@ export function proxy(request: NextRequest) {
   // Fall back to 'DEFAULT' (UK variant) if not present (local dev, unknown country).
   const country = request.headers.get('x-vercel-ip-country') ?? 'DEFAULT'
 
-  const response = NextResponse.next()
+  // Forward on the *request* headers so server components can read it via
+  // `headers()`. Setting it only on the response is invisible server-side.
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set('x-user-country', country)
+
+  const response = NextResponse.next({ request: { headers: requestHeaders } })
   response.headers.set('x-user-country', country)
   return response
 }
