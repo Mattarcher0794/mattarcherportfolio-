@@ -46,19 +46,19 @@ const copyVariant = (label: string) =>
     { label }
   )
 
-// Storage. Currently `local`: edit content by running `npm run dev` and visiting
-// localhost:3000/keystatic (writes files → commit → push → auto-deploy). The
-// deployed /keystatic admin is read-only in this mode.
-//
-// To enable editing from the *deployed* site, switch to Keystatic Cloud:
-//   storage: { kind: 'cloud' }, cloud: { project: '<team>/<project>' }
-// (Cloud brokers GitHub auth, so no build-time secrets and no GitHub App setup.)
-// GitHub mode is intentionally NOT used: it requires the GitHub App secrets to
-// exist before the first build, which blocks the initial deploy.
-const storage = { kind: 'local' } as const
+// Storage: `local` in dev (edits write files on disk, no auth) and Keystatic
+// `cloud` in production (the deployed admin authenticates via Keystatic Cloud
+// and commits to the repo). Gated on NODE_ENV — which Next inlines into the
+// client bundle — so the browser admin and the server agree on the mode. Cloud
+// mode needs no build-time secrets, so deploys build cleanly.
+const storage =
+  process.env.NODE_ENV === 'development'
+    ? ({ kind: 'local' } as const)
+    : ({ kind: 'cloud' } as const)
 
 export default config({
   storage,
+  cloud: { project: 'matt-archer/mattarcherportfolio' },
   ui: {
     brand: { name: 'Matt Archer — Content' },
   },
