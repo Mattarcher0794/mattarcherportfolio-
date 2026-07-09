@@ -46,14 +46,16 @@ const copyVariant = (label: string) =>
     { label }
   )
 
-// Storage: `github` in production (deployed admin commits to the repo), `local`
-// in dev (edits write files on disk). Toggled by the KEYSTATIC_STORAGE env var so
-// local `npm run dev` keeps working without GitHub auth. Set KEYSTATIC_STORAGE=github
-// in Vercel, plus the GitHub App env vars from the /keystatic setup flow.
-const storage =
-  process.env.KEYSTATIC_STORAGE === 'github'
-    ? ({ kind: 'github', repo: 'Mattarcher0794/mattarcherportfolio-' } as const)
-    : ({ kind: 'local' } as const)
+// Storage. Currently `local`: edit content by running `npm run dev` and visiting
+// localhost:3000/keystatic (writes files → commit → push → auto-deploy). The
+// deployed /keystatic admin is read-only in this mode.
+//
+// To enable editing from the *deployed* site, switch to Keystatic Cloud:
+//   storage: { kind: 'cloud' }, cloud: { project: '<team>/<project>' }
+// (Cloud brokers GitHub auth, so no build-time secrets and no GitHub App setup.)
+// GitHub mode is intentionally NOT used: it requires the GitHub App secrets to
+// exist before the first build, which blocks the initial deploy.
+const storage = { kind: 'local' } as const
 
 export default config({
   storage,
