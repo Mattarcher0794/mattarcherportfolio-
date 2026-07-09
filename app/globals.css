@@ -1043,26 +1043,28 @@ nav.top.scrolled {
   color: var(--terracotta);
   font-weight: 400;
 }
+/* Single unbroken row: every brand shares the width equally and shrinks as more
+   are added — no wrapping, no orphan rows. */
 .logo-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
   border-top: 1px solid var(--rule-2);
   border-left: 1px solid var(--rule-2);
   border-radius: 16px;
   overflow: hidden;
 }
-@media (max-width: 980px) {
+/* On narrow screens the row would squash to unreadable, so it becomes a
+   swipe-able strip with a legible minimum cell width. */
+@media (max-width: 720px) {
   .logo-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-@media (max-width: 520px) {
-  .logo-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-auto-columns: minmax(150px, 1fr);
+    overflow-x: auto;
+    overflow-y: hidden;
   }
 }
 .logo-cell {
-  aspect-ratio: 4 / 3;
+  min-height: 150px;
   border-right: 1px solid var(--rule-2);
   border-bottom: 1px solid var(--rule-2);
   display: flex;
@@ -1096,15 +1098,6 @@ nav.top.scrolled {
 }
 .logo-cell:hover .index {
   color: var(--peach);
-}
-/* Filler cells complete the last grid row — inert, no hover treatment */
-.logo-cell.is-filler {
-  background: var(--surface);
-  cursor: default;
-}
-.logo-cell.is-filler:hover {
-  background: var(--surface);
-  color: var(--ink-2);
 }
 
 /* ─── Contact ────────────────────────────────────────────────────────────── */
