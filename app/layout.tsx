@@ -1,48 +1,69 @@
 import type { Metadata } from 'next'
-import { Fira_Code, DM_Sans, DM_Mono } from 'next/font/google'
+import {
+  Bricolage_Grotesque,
+  Hanken_Grotesk,
+  Instrument_Serif,
+  JetBrains_Mono,
+} from 'next/font/google'
+import { headers } from 'next/headers'
+import { getContent } from '@/lib/content'
 import './globals.css'
 
-const firaCode = Fira_Code({
-  variable: '--font-fira',
+const bricolage = Bricolage_Grotesque({
+  variable: '--font-bricolage',
   subsets: ['latin'],
-  weight: ['700'],
+  weight: ['400', '500', '600', '700', '800'],
   display: 'swap',
 })
 
-const dmSans = DM_Sans({
-  variable: '--font-dm-sans',
+const hanken = Hanken_Grotesk({
+  variable: '--font-hanken',
   subsets: ['latin'],
-  weight: ['300', '400', '500'],
+  weight: ['400', '500', '600', '700'],
   display: 'swap',
 })
 
-const dmMono = DM_Mono({
-  variable: '--font-dm-mono',
+const instrument = Instrument_Serif({
+  variable: '--font-instrument',
   subsets: ['latin'],
   weight: ['400'],
+  style: ['normal', 'italic'],
   display: 'swap',
 })
 
-export const metadata: Metadata = {
-  title: 'Matt Archer — Principal Product Manager',
-  description:
-    'Principal PM with 8+ years building consumer products. Led Wagamama Soul Club, HCA Healthcare, Subway. Based in London.',
-  openGraph: {
-    title: 'Matt Archer — Principal Product Manager',
-    description:
-      'Principal PM with 8+ years building consumer products. Led Wagamama Soul Club, HCA Healthcare, Subway. Based in London.',
-    url: 'https://mattarcher.me',
-    siteName: 'Matt Archer',
-    locale: 'en_GB',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Matt Archer — Principal Product Manager',
-    description:
-      'Principal PM with 8+ years building consumer products. Led Wagamama Soul Club, HCA Healthcare, Subway. Based in London.',
-  },
-  metadataBase: new URL('https://mattarcher.me'),
+const jetbrains = JetBrains_Mono({
+  variable: '--font-jetbrains',
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  display: 'swap',
+})
+
+export async function generateMetadata(): Promise<Metadata> {
+  const headersList = await headers()
+  const country = headersList.get('x-user-country')
+  const site = getContent(country)
+
+  const title = 'Matt Archer — Principal Product Manager'
+
+  return {
+    title,
+    description: site.metaDescription,
+    openGraph: {
+      title,
+      description: site.metaDescription,
+      url: 'https://mattarcher.me',
+      siteName: 'Matt Archer',
+      locale: 'en_GB',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description: site.metaDescription,
+    },
+    metadataBase: new URL('https://mattarcher.me'),
+    alternates: { canonical: 'https://mattarcher.me' },
+  }
 }
 
 export default function RootLayout({
@@ -52,10 +73,10 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
-      className={`${firaCode.variable} ${dmSans.variable} ${dmMono.variable} h-full`}
+      lang="en-GB"
+      className={`${bricolage.variable} ${hanken.variable} ${instrument.variable} ${jetbrains.variable}`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body>{children}</body>
     </html>
   )
 }
