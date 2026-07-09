@@ -46,8 +46,17 @@ const copyVariant = (label: string) =>
     { label }
   )
 
+// Storage: `github` in production (deployed admin commits to the repo), `local`
+// in dev (edits write files on disk). Toggled by the KEYSTATIC_STORAGE env var so
+// local `npm run dev` keeps working without GitHub auth. Set KEYSTATIC_STORAGE=github
+// in Vercel, plus the GitHub App env vars from the /keystatic setup flow.
+const storage =
+  process.env.KEYSTATIC_STORAGE === 'github'
+    ? ({ kind: 'github', repo: 'Mattarcher0794/mattarcherportfolio-' } as const)
+    : ({ kind: 'local' } as const)
+
 export default config({
-  storage: { kind: 'local' },
+  storage,
   ui: {
     brand: { name: 'Matt Archer — Content' },
   },
