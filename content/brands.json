@@ -1,6 +1,10 @@
 {
   "items": [
     {
+      "logo": "AND Digital",
+      "marquee": "AND DIGITAL"
+    },
+    {
       "logo": "Lloyds Banking Group",
       "marquee": "LLOYDS BANKING GROUP"
     },
@@ -19,10 +23,6 @@
     {
       "logo": "British Airways",
       "marquee": "BRITISH AIRWAYS"
-    },
-    {
-      "logo": "AND Digital",
-      "marquee": "AND DIGITAL"
     }
   ]
 }
