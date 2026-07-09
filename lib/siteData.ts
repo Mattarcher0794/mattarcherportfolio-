@@ -40,5 +40,12 @@ export async function getSkills(): Promise<SkillColumn[]> {
 export async function getBrands(): Promise<Brand[]> {
   const data = await reader.singletons.brands.read()
   if (!data) return []
-  return data.items.map((b) => ({ logo: b.logo, marquee: b.marquee }))
+  return data.items
+    .filter((b) => b.logo.trim() !== '')
+    .map((b) => ({
+      logo: b.logo,
+      // Fall back to the uppercased brand name when the marquee field is left
+      // blank (common when adding a brand quickly in the CMS).
+      marquee: b.marquee?.trim() ? b.marquee : b.logo.toUpperCase(),
+    }))
 }

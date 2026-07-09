@@ -1097,6 +1097,15 @@ nav.top.scrolled {
 .logo-cell:hover .index {
   color: var(--peach);
 }
+/* Filler cells complete the last grid row — inert, no hover treatment */
+.logo-cell.is-filler {
+  background: var(--surface);
+  cursor: default;
+}
+.logo-cell.is-filler:hover {
+  background: var(--surface);
+  color: var(--ink-2);
+}
 
 /* ─── Contact ────────────────────────────────────────────────────────────── */
 
