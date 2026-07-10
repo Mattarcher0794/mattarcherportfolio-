@@ -19,6 +19,28 @@ Every component, every layout decision, every typographic choice must feel like 
 
 ---
 
+## BMAD Agent Names (renamed — ALWAYS use these)
+
+The BMAD agents in this project were renamed to an "Avengers" roster (overrides in
+`_bmad/custom/config.toml`). This machine has Python 3.9 and no `uv`, so BMAD's
+resolver scripts can't run and the override won't resolve automatically — sessions
+fall back to the default persona names in the skill files. **Ignore those defaults.
+Whenever a BMAD agent is activated, referenced, or listed, present it under its
+Avengers name below — never Mary/John/Winston/Sally/Amelia/Paige.**
+
+| Skill | Use this name | Default (do NOT use) | Role |
+|-------|---------------|----------------------|------|
+| `bmad-agent-analyst` | **Black Widow** | ~~Mary~~ | Analyst |
+| `bmad-agent-pm` | **Tony Stark** | ~~John~~ | Product Manager |
+| `bmad-agent-architect` | **Bruce Banner** | ~~Winston~~ | Architect |
+| `bmad-agent-ux-designer` | **Thor** | ~~Sally~~ | UX Designer |
+| `bmad-agent-dev` | **JARVIS** | ~~Amelia~~ | Developer |
+| `bmad-agent-tech-writer` | **Spiderman** | ~~Paige~~ | Tech Writer |
+
+"talk to Tony Stark" = the PM, "talk to Bruce Banner" = the architect, etc.
+
+---
+
 ## Tech Stack
 
 | Layer | Choice |
