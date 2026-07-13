@@ -2,13 +2,20 @@ import { headers } from 'next/headers'
 import Link from 'next/link'
 import { getContent } from '@/lib/content'
 import { getHeroStats, type HeroStat } from '@/lib/siteData'
+import { renderInline } from '@/lib/richText'
 
 function formatStat({ target, prefix, suffix }: HeroStat): string {
   const decimals = target % 1 !== 0 ? 1 : 0
   return `${prefix}${target.toFixed(decimals)}${suffix}`
 }
 
-export default async function Hero({ cvHref }: { cvHref: string }) {
+export default async function Hero({
+  cvHref,
+  heroBody,
+}: {
+  cvHref: string
+  heroBody: string
+}) {
   const headersList = await headers()
   const country = headersList.get('x-user-country')
   const [site, heroStats] = await Promise.all([getContent(country), getHeroStats()])
@@ -63,12 +70,7 @@ export default async function Hero({ cvHref }: { cvHref: string }) {
           </p>
         </div>
         <div>
-          <p className="hero-body">
-            Shipping high-impact digital products across financial services, retail,
-            healthtech and the public sector, from zero-to-one consumer apps to enterprise
-            AI automation. Currently leading a strategic platform outcome at Lloyds Banking
-            Group, with COO-level visibility.
-          </p>
+          <p className="hero-body">{renderInline(heroBody)}</p>
           <div className="cta-row">
             <Link href="#work" className="btn primary">
               View my work <span className="arr">↓</span>
