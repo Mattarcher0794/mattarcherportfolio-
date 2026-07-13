@@ -43,7 +43,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const country = headersList.get('x-user-country')
   const site = await getContent(country)
 
-  const title = 'Matt Archer — Principal Product Manager'
+  const title = 'Matt Archer · Principal Product Manager'
 
   return {
     title,

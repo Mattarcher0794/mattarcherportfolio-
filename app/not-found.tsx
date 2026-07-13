@@ -11,7 +11,7 @@ export default function NotFound() {
           Lost the <span className="archer">thread.</span>
         </h1>
         <p className="hero-body">
-          That page doesn&apos;t exist — or hasn&apos;t been built yet. Let&apos;s get you
+          That page doesn&apos;t exist, or hasn&apos;t been built yet. Let&apos;s get you
           back to the work.
         </p>
         <div className="cta-row">

@@ -1,9 +1,9 @@
 {
   "role": "Agile Business Analyst",
   "order": 4,
-  "date": "Aug 2016 — July 2017",
+  "date": "Aug 2016 – July 2017",
   "company": "Sopra Steria · London",
-  "projects": ["— Public sector delivery —"],
+  "projects": ["Public sector delivery"],
   "projectsMuted": true,
   "current": false
 }

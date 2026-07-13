@@ -32,7 +32,11 @@ const footItem = fields.object(
 const copyVariant = (label: string) =>
   fields.object(
     {
-      heroTag: fields.text({ label: 'Hero tag' }),
+      heroTag: fields.text({
+        label: 'Availability marker',
+        description:
+          'The hero availability line (shown after the "Available" label + live dot). Keep the DEFAULT/UK variant free of relocation detail.',
+      }),
       heroLocation: fields.text({ label: 'Hero location' }),
       contactHeadlineLead: fields.text({ label: 'Contact headline (lead)' }),
       contactHeadlineEm: fields.text({ label: 'Contact headline (accent)' }),

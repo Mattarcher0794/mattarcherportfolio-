@@ -11,7 +11,7 @@ export default async function SelectedWork() {
           Three things <em>I&apos;m proud of.</em>
         </h2>
         <p className="work-sub">
-          Each shipped, each measured, each different in scale — from an 80-person banking
+          Each shipped, each measured, each different in scale, from an 80-person banking
           platform to a million-user consumer app.
         </p>
 

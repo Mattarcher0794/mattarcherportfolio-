@@ -22,7 +22,7 @@ export default function Navigation() {
   return (
     <nav className={`top${scrolled ? ' scrolled' : ''}`}>
       <div className="nav-row">
-        <Link href="#top" className="mark" aria-label="Matt Archer — top">
+        <Link href="#top" className="mark" aria-label="Matt Archer, back to top">
           <span className="blob">
             <span>MA</span>
           </span>

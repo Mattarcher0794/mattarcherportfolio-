@@ -12,7 +12,7 @@ export default function About() {
               9+ years leading cross-functional teams across B2C and B2B at scale
             </strong>
             , shipping high-impact digital products across financial services, retail,
-            healthtech and the public sector — from zero-to-one consumer apps to enterprise
+            healthtech and the public sector, from zero-to-one consumer apps to enterprise
             AI automation.
           </p>
           <p>
@@ -24,7 +24,7 @@ export default function About() {
           </p>
         </div>
         <div className="about-edu">
-          BSc (Hons) Business Information Technology, First Class — Bournemouth University
+          BSc (Hons) Business Information Technology, First Class, Bournemouth University
         </div>
       </div>
     </section>

@@ -1,9 +1,9 @@
 {
   "role": "Product Owner",
   "order": 3,
-  "date": "July 2017 — June 2018",
+  "date": "July 2017 – June 2018",
   "company": "Meganexus · London",
-  "projects": ["— MoJ rehabilitation platform —"],
+  "projects": ["MoJ rehabilitation platform"],
   "projectsMuted": true,
   "current": false
 }
