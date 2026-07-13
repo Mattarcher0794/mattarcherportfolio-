@@ -138,10 +138,13 @@ export default function Interactions() {
     const mqTrack = marquee?.querySelector<HTMLElement>('.marquee-track')
     if (marquee && mqTrack) {
       marquee.classList.add('is-interactive')
-      const isMobile = window.matchMedia('(max-width: 720px)').matches
-      const speed = isMobile ? 95 : 55 // px per second
+      // px/sec, CMS-controlled via data-speed on .marquee (falls back to 60)
+      const speed = parseFloat(marquee.dataset.speed || '') || 60
 
-      let half = mqTrack.offsetWidth / 2 || 1
+      // Seamless loop distance = where the 2nd (duplicate) track copy starts.
+      // offsetLeft is unaffected by transform, so it stays accurate.
+      const loopLen = () => (mqTrack.children[1] as HTMLElement)?.offsetLeft || mqTrack.offsetWidth
+      let half = loopLen() || 1
       let offset = 0
       let dragging = false
       let startX = 0
@@ -186,7 +189,7 @@ export default function Interactions() {
         marquee.classList.remove('is-dragging')
       }
       const recalc = () => {
-        half = mqTrack.offsetWidth / 2 || 1
+        half = loopLen() || 1
       }
 
       marquee.addEventListener('pointerdown', onDown)

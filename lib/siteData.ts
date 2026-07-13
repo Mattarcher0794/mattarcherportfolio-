@@ -37,6 +37,11 @@ export async function getSkills(): Promise<SkillColumn[]> {
   }))
 }
 
+export async function getMarqueeSpeed(): Promise<number> {
+  const data = await reader.singletons.brands.read()
+  return data?.marqueeSpeed || 60
+}
+
 export async function getBrands(): Promise<Brand[]> {
   const data = await reader.singletons.brands.read()
   if (!data) return []

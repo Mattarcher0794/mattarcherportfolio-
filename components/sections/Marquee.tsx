@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import { getBrands } from '@/lib/siteData'
+import { getBrands, getMarqueeSpeed } from '@/lib/siteData'
 
 function Track({ names }: { names: string[] }) {
   return (
@@ -14,10 +14,10 @@ function Track({ names }: { names: string[] }) {
 }
 
 export default async function Marquee() {
-  const brands = await getBrands()
+  const [brands, speed] = await Promise.all([getBrands(), getMarqueeSpeed()])
   const names = brands.map((b) => b.marquee)
   return (
-    <div className="marquee" aria-hidden="true">
+    <div className="marquee" aria-hidden="true" data-speed={speed}>
       <div className="marquee-track">
         <Track names={names} />
         <Track names={names} />

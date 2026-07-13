@@ -126,6 +126,14 @@ nav.top {
 nav.top.scrolled {
   border-bottom-color: var(--rule);
 }
+@media (max-width: 720px) {
+  /* Solid bar on mobile — backdrop-filter blur on a fixed element is the main
+     cause of the jumpy repaint during pinch-zoom on iOS. */
+  nav.top {
+    background: var(--bg);
+    backdrop-filter: none;
+  }
+}
 .nav-row {
   display: flex;
   align-items: center;
@@ -614,6 +622,9 @@ nav.top.scrolled {
   gap: 44px;
   padding: 16px 0;
   white-space: nowrap;
+  /* size to content, not the viewport — otherwise the loop wraps far too early
+     and skips most of the brands */
+  width: max-content;
   animation: marquee 36s linear infinite;
   font-family: var(--display);
   font-weight: 700;
