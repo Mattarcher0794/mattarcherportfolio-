@@ -35,7 +35,7 @@ export default function Navigation() {
             </Link>
           ))}
           <a href="/matt-archer-cv.pdf" download="Matt-Archer-CV.pdf" className="cv">
-            Download CV ↓
+            Download CV <span className="arr">↓</span>
           </a>
         </div>
       </div>

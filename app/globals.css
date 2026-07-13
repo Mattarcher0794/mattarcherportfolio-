@@ -206,6 +206,9 @@ nav.top.scrolled {
   color: var(--ink);
 }
 .nav-links a.cv {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
   background: var(--moss);
   color: var(--surface);
   margin-left: 8px;
@@ -213,6 +216,19 @@ nav.top.scrolled {
   border-radius: 12px 16px 13px 15px;
   transition: background 160ms, color 160ms, transform 320ms cubic-bezier(0.2, 0.7, 0.2, 1),
     border-radius 360ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+/* Circular arrow badge, matching the primary CTA (.btn.primary .arr) */
+.nav-links a.cv .arr {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 99px;
+  background: var(--surface);
+  color: var(--moss-deep);
+  font-size: 9px;
+  line-height: 1;
 }
 .nav-links a.cv:hover {
   background: var(--moss-deep);
