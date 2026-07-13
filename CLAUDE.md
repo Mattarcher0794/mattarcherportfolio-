@@ -420,5 +420,16 @@ Do not skip steps. Do not build multiple sections in one session without committ
 theme, Bricolage/Instrument Serif/Hanken/JetBrains Mono, hero stats, Lloyds as the
 headline case study). The homepage is fully built. `PRD.md` predates this pivot and
 still describes the earlier dark direction — treat this CLAUDE.md as authoritative
-for design/build decisions until the PRD is refreshed. Follow-ups: case-study detail
-pages, SVG brand logos, PRD refresh.*
+for design/build decisions until the PRD is refreshed.*
+
+*July 2026 (later session): HCA case study re-anchored on the booking transformation
+(+41% online bookings, £6M+ screening revenue); home body copy (hero intro + both
+About paragraphs) is now CMS-editable via the Keystatic **Home Copy** singleton with
+`**bold**`/`*italic*` support (`lib/richText.tsx`); the CV is swappable via the
+Keystatic **CV / Downloads** upload with a fallback; Vercel Analytics added
+(`<Analytics />` in `app/layout.tsx`); em dashes banned in user-facing copy. Hero stat
+counters use a fixed grid + `tabular-nums` so they no longer jitter while counting.*
+
+*Follow-ups: case-study detail pages (`/work/<slug>`), SVG brand logos, PRD refresh,
+timeline additions from the latest CV (Edenred, McDonald's HQ placement). Pending
+owner action: enable Web Analytics in the Vercel dashboard for data to appear.*
