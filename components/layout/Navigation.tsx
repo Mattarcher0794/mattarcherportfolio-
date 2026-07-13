@@ -9,7 +9,7 @@ const navLinks = [
   { label: 'Contact', href: '#contact' },
 ]
 
-export default function Navigation() {
+export default function Navigation({ cvHref }: { cvHref: string }) {
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function Navigation() {
               {link.label}
             </Link>
           ))}
-          <a href="/matt-archer-cv.pdf" download="Matt-Archer-CV.pdf" className="cv">
+          <a href={cvHref} download="Matt-Archer-CV.pdf" className="cv">
             Download CV <span className="arr">↓</span>
           </a>
         </div>
