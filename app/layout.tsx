@@ -6,6 +6,7 @@ import {
   JetBrains_Mono,
 } from 'next/font/google'
 import { headers } from 'next/headers'
+import { Analytics } from '@vercel/analytics/next'
 import { getContent } from '@/lib/content'
 import './globals.css'
 
@@ -83,7 +84,10 @@ export default function RootLayout({
       lang="en-GB"
       className={`${bricolage.variable} ${hanken.variable} ${instrument.variable} ${jetbrains.variable}`}
     >
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   )
 }

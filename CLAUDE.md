@@ -308,7 +308,7 @@ Rules that still hold:
 
 - Every image must use `next/image` with explicit `width` and `height` or `fill` + a sized container
 - Fonts loaded once in `app/layout.tsx` via `next/font/google` — never loaded again in child components
-- No third-party analytics scripts in v1
+- Vercel Analytics is the only permitted analytics — the `<Analytics />` component from `@vercel/analytics/next` mounts once in `app/layout.tsx`. No other third-party analytics scripts.
 - Target Lighthouse score: 90+ across all four categories
 - Target load time: <2 seconds on simulated 4G mobile
 
@@ -368,7 +368,8 @@ The following features are on the roadmap but **not in scope for v1**. Do not bu
 
 - **AI Chatbot:** Will be a Claude API call via a Next.js API route (`/api/chat`). The App Router structure already supports this. No scaffolding needed now.
 - **Blog / Thought leadership:** Will be MDX files or a lightweight CMS. Keep the routing structure clean.
-- **Vercel Analytics:** Will be added in v1.5. Don't add it now, but don't do anything that blocks it.
+
+*(Vercel Analytics has since been added — `<Analytics />` in `app/layout.tsx`. See Performance Rules.)*
 
 ---
 
