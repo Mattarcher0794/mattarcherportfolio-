@@ -9,13 +9,16 @@ import Timeline from '@/components/sections/Timeline'
 import Logos from '@/components/sections/Logos'
 import Contact from '@/components/sections/Contact'
 import Interactions from '@/components/ui/Interactions'
+import { getCvHref } from '@/lib/siteData'
 
-export default function Home() {
+export default async function Home() {
+  const cvHref = await getCvHref()
+
   return (
     <>
-      <Navigation />
+      <Navigation cvHref={cvHref} />
       <main>
-        <Hero />
+        <Hero cvHref={cvHref} />
         <Marquee />
         <About />
         <SelectedWork />

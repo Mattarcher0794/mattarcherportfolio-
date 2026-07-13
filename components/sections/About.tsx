@@ -8,19 +8,16 @@ export default function About() {
         </h2>
         <div className="about-grid">
           <p>
-            <strong>
-              9+ years leading cross-functional teams across B2C and B2B at scale
-            </strong>
-            , shipping high-impact digital products across financial services, retail,
-            healthtech and the public sector, from zero-to-one consumer apps to enterprise
-            AI automation.
+            <strong>9+ years leading cross-functional teams</strong>, sometimes embedded
+            inside the client&apos;s organisation, sometimes brought in as a consultant to
+            reset direction. I&apos;ve built for the full spread of users, from consumers and
+            patients through to brokers, relationship managers and BDMs.
           </p>
           <p>
-            I&apos;ve owned the full product lifecycle across both consultancy and embedded
-            leadership, working directly with consumers, patients, brokers, relationship
-            managers and BDMs. Currently leading a strategic platform outcome at Lloyds
-            Banking Group, and in parallel built an internal AI product-development programme
-            to upskill teams on spec-driven development.
+            I own the full product lifecycle, from the first discovery interview to the launch
+            and the iteration after it. Most recently I built an internal AI product-development
+            programme, upskilling teams on spec-driven development, now being piloted with a
+            client.
           </p>
         </div>
         <div className="about-edu">

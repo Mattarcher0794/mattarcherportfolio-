@@ -173,6 +173,20 @@ export default config({
         ),
       },
     }),
+    downloads: singleton({
+      label: 'CV / Downloads',
+      path: 'content/downloads',
+      format: { data: 'json' },
+      schema: {
+        cv: fields.file({
+          label: 'CV (PDF)',
+          description:
+            'Upload the latest CV (PDF). This replaces the Download CV link everywhere on the site. The uploaded filename does not matter; the download is always named Matt-Archer-CV.pdf. Leave empty to fall back to the built-in CV.',
+          directory: 'public/cv',
+          publicPath: '/cv',
+        }),
+      },
+    }),
     brands: singleton({
       label: 'Brands',
       path: 'content/brands',

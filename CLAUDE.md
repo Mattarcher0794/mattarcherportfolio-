@@ -332,6 +332,7 @@ Rules that still hold:
 - **Do not** use percentage bars or star ratings for skills
 - **Do not** write case study content in third person or agency voice
 - **Do not** use the word "passionate" anywhere on the site
+- **Do not** use em dashes (`—`) or double hyphens (`--`) in user-facing copy — they read as AI-generated. Rewrite with a comma, a full stop, or a rephrase. Applies to all visible site copy: hero, about, case studies, content JSON, etc. (En dashes `–` in date ranges like `2023–present` are fine; this rule is about prose, not code comments.)
 - **Do not** hardcode geo-targeted copy in components — always use `content.ts`
 - **Do not** use `<img>` tags
 - **Do not** introduce new dependencies without a clear reason
@@ -342,13 +343,22 @@ Rules that still hold:
 
 ## CV File
 
-The CV PDF lives at `/public/matt-archer-cv.pdf`. The download button must trigger a direct download using the `download` attribute on the anchor:
+The Download CV link resolves via `getCvHref()` in `lib/siteData.ts`. It prefers a
+CV uploaded through Keystatic (the **CV / Downloads** singleton → `content/downloads.json`,
+files stored in `public/cv/`) and falls back to the built-in `/public/matt-archer-cv.pdf`
+when none is uploaded, so the button always works. The path is fetched once in
+`app/page.tsx` and passed as `cvHref` to both `Hero` and `Navigation`.
+
+The download must always trigger a direct download via the `download` attribute, which
+forces the saved filename regardless of the stored path:
 
 ```html
-<a href="/matt-archer-cv.pdf" download="Matt-Archer-CV.pdf">Download CV</a>
+<a href={cvHref} download="Matt-Archer-CV.pdf">Download CV</a>
 ```
 
-Updating the CV requires only replacing the PDF file — no code changes.
+**Two ways to update the CV, both no-code:**
+1. Upload a new PDF at `/keystatic` → **CV / Downloads** (recommended, self-service).
+2. Replace `/public/matt-archer-cv.pdf` directly and commit.
 
 ---
 

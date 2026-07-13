@@ -5,7 +5,7 @@
   "company": "HCA Healthcare · Primary Care",
   "titleLead": "Zero to one on",
   "titleEm": "private healthcare's digital front door.",
-  "description": "I ran end-to-end patient discovery, researching directly with patients to identify acquisition funnel pain-points and shape a refined primary care proposition, then owned the full roadmap from zero to one across web and native app, expanding into corporate markets.",
+  "description": "I ran end-to-end patient discovery, researching directly with patients to find the friction in the acquisition funnel, then owned the roadmap from zero to one across web and native app. I reimagined the online booking journey to mirror HCA's premium in-clinic experience, then launched online booking for health screenings.",
   "tags": [
     "Healthcare",
     "Zero-to-one",
@@ -13,18 +13,18 @@
     "B2B expansion"
   ],
   "panelVariant": "peach",
-  "panelLabel": "B2C growth · Year one",
-  "dominant": "+30",
+  "panelLabel": "Online bookings · Year one",
+  "dominant": "+41",
   "dominantEm": "%",
-  "dominantCaption": "growth in year one, then expanded into corporate healthcare markets.",
+  "dominantCaption": "growth in online bookings, from under 30% to nearly half of all primary care bookings.",
   "secondary": [
     {
-      "value": "0→1",
-      "label": "Web + native, from scratch"
+      "value": "£6M+",
+      "label": "Screening revenue unlocked"
     },
     {
-      "value": "2",
-      "label": "Markets: self-pay + corporate"
+      "value": "73k",
+      "label": "Online bookings a year"
     }
   ]
 }

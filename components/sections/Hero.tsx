@@ -8,7 +8,7 @@ function formatStat({ target, prefix, suffix }: HeroStat): string {
   return `${prefix}${target.toFixed(decimals)}${suffix}`
 }
 
-export default async function Hero() {
+export default async function Hero({ cvHref }: { cvHref: string }) {
   const headersList = await headers()
   const country = headersList.get('x-user-country')
   const [site, heroStats] = await Promise.all([getContent(country), getHeroStats()])
@@ -73,7 +73,7 @@ export default async function Hero() {
             <Link href="#work" className="btn primary">
               View my work <span className="arr">↓</span>
             </Link>
-            <a href="/matt-archer-cv.pdf" download="Matt-Archer-CV.pdf" className="btn">
+            <a href={cvHref} download="Matt-Archer-CV.pdf" className="btn">
               Download CV <span className="arr">↓</span>
             </a>
           </div>
