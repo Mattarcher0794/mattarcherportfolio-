@@ -121,25 +121,29 @@ nav.top {
   left: 0;
   right: 0;
   z-index: 80;
-  background: rgba(247, 237, 228, 0.88);
-  backdrop-filter: blur(12px);
+  /* Transparent at the top — the bar melts into the hero */
+  background: transparent;
   border-bottom: 1px solid transparent;
-  transition: border-color 240ms;
-  /* Own compositing layer — steadies the fixed + backdrop-filter bar during
-     pinch-zoom on mobile (it otherwise repaints/jumps as the visual viewport moves). */
+  transition: background 260ms ease, backdrop-filter 260ms ease, border-color 260ms ease,
+    box-shadow 260ms ease;
+  /* Own compositing layer keeps the fixed bar steady during scroll/zoom */
   transform: translateZ(0);
   will-change: transform;
 }
+/* Frosted glass once the page scrolls underneath it */
 nav.top.scrolled {
+  background: rgba(247, 237, 228, 0.65);
+  -webkit-backdrop-filter: blur(14px) saturate(1.6);
+  backdrop-filter: blur(14px) saturate(1.6);
   border-bottom-color: var(--rule);
+  box-shadow: 0 8px 30px rgba(60, 50, 72, 0.06);
 }
-@media (max-width: 720px) {
-  /* Solid bar on mobile — backdrop-filter blur on a fixed element is the main
-     cause of the jumpy repaint during pinch-zoom on iOS. */
-  nav.top {
-    background: var(--bg);
-    backdrop-filter: none;
-  }
+/* During pinch-zoom, drop the blur (the expensive repaint that juddered on
+   iOS) and fall back to a solid fill. .is-zooming is toggled from JS. */
+.is-zooming nav.top {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background: var(--bg);
 }
 .nav-row {
   display: flex;

@@ -4,7 +4,6 @@ export default function Footer() {
       <div className="wrap">
         <div className="row">
           <span>© Matt Archer · 2026</span>
-          <span>Bricolage Grotesque · Instrument Serif · Hanken Grotesk</span>
         </div>
       </div>
     </footer>
