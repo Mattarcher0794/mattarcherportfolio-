@@ -50,6 +50,9 @@
 html {
   scroll-behavior: smooth;
   background: var(--bg);
+  /* Contain the off-canvas decorative blobs at the root scroller with `clip`
+     (no scroll container → doesn't fight pinch-zoom, unlike `hidden`). */
+  overflow-x: clip;
 }
 
 body {
@@ -61,7 +64,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.55;
-  overflow-x: hidden;
+  /* `clip` (not `hidden`) contains the off-canvas blobs without creating a
+     scroll container — `hidden` establishes a scrollport that fights the
+     visual viewport during pinch-zoom/pan on iOS, which reads as the page
+     "not responding to zoom". `clip` clips the same overflow, no scrollport. */
+  overflow-x: clip;
 }
 
 ::selection {
