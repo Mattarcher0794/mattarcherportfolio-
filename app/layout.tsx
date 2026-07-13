@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import {
   Bricolage_Grotesque,
   Hanken_Grotesk,
@@ -8,6 +8,13 @@ import {
 import { headers } from 'next/headers'
 import { getContent } from '@/lib/content'
 import './globals.css'
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: '#F7EDE4',
+}
 
 const bricolage = Bricolage_Grotesque({
   variable: '--font-bricolage',

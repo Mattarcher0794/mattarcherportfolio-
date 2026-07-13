@@ -178,6 +178,12 @@ export default config({
       path: 'content/brands',
       format: { data: 'json' },
       schema: {
+        marqueeSpeed: fields.integer({
+          label: 'Marquee speed (px/sec)',
+          description:
+            'How fast the scrolling brand ticker moves. Higher = faster. ~60 is a gentle drift.',
+          defaultValue: 60,
+        }),
         items: fields.array(
           fields.object({
             logo: fields.text({ label: 'Logo grid name' }),

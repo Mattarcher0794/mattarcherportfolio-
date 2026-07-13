@@ -130,6 +130,86 @@ export default function Interactions() {
       }
     }
 
+    // ── Marquee: JS auto-scroll + drag-to-scratch ─────────────────────────
+    // Takes over from the CSS keyframe (via .is-interactive) so the ticker can
+    // be dragged. Auto-scrolls left; faster on mobile. touch-action:pan-y (CSS)
+    // keeps vertical page scrolling intact while horizontal drags scrub.
+    const marquee = document.querySelector<HTMLElement>('.marquee')
+    const mqTrack = marquee?.querySelector<HTMLElement>('.marquee-track')
+    if (marquee && mqTrack) {
+      marquee.classList.add('is-interactive')
+      // px/sec, CMS-controlled via data-speed on .marquee (falls back to 60)
+      const speed = parseFloat(marquee.dataset.speed || '') || 60
+
+      // Seamless loop distance = where the 2nd (duplicate) track copy starts.
+      // offsetLeft is unaffected by transform, so it stays accurate.
+      const loopLen = () => (mqTrack.children[1] as HTMLElement)?.offsetLeft || mqTrack.offsetWidth
+      let half = loopLen() || 1
+      let offset = 0
+      let dragging = false
+      let startX = 0
+      let startOffset = 0
+      let last = performance.now()
+      let raf = 0
+
+      const wrap = () => {
+        if (half <= 0) return
+        while (offset <= -half) offset += half
+        while (offset > 0) offset -= half
+      }
+      const apply = () => {
+        mqTrack.style.transform = `translateX(${offset}px)`
+      }
+      const frame = (now: number) => {
+        const dt = Math.min((now - last) / 1000, 0.05)
+        last = now
+        if (!dragging && !prefersReduced) offset -= speed * dt
+        wrap()
+        apply()
+        raf = requestAnimationFrame(frame)
+      }
+      raf = requestAnimationFrame(frame)
+
+      const onDown = (e: PointerEvent) => {
+        dragging = true
+        startX = e.clientX
+        startOffset = offset
+        marquee.classList.add('is-dragging')
+      }
+      const onMoveP = (e: PointerEvent) => {
+        if (!dragging) return
+        offset = startOffset + (e.clientX - startX)
+        wrap()
+        apply()
+      }
+      const onUp = () => {
+        if (!dragging) return
+        dragging = false
+        last = performance.now() // avoid a jump from the paused interval
+        marquee.classList.remove('is-dragging')
+      }
+      const recalc = () => {
+        half = loopLen() || 1
+      }
+
+      marquee.addEventListener('pointerdown', onDown)
+      marquee.addEventListener('pointermove', onMoveP)
+      window.addEventListener('pointerup', onUp)
+      window.addEventListener('pointercancel', onUp)
+      window.addEventListener('resize', recalc)
+      document.fonts?.ready.then(recalc).catch(() => {})
+
+      cleanups.push(() => {
+        cancelAnimationFrame(raf)
+        marquee.removeEventListener('pointerdown', onDown)
+        marquee.removeEventListener('pointermove', onMoveP)
+        window.removeEventListener('pointerup', onUp)
+        window.removeEventListener('pointercancel', onUp)
+        window.removeEventListener('resize', recalc)
+        marquee.classList.remove('is-interactive', 'is-dragging')
+      })
+    }
+
     // ── Animated stat counters ─────────────────────────────────────────────
     const stats = Array.from(document.querySelectorAll<HTMLElement>('.stat-num'))
     const timers: number[] = []
