@@ -173,6 +173,30 @@ export default config({
         ),
       },
     }),
+    homeCopy: singleton({
+      label: 'Home Copy',
+      path: 'content/home-copy',
+      format: { data: 'json' },
+      schema: {
+        heroBody: fields.text({
+          label: 'Hero — intro paragraph',
+          description:
+            'The paragraph next to the hero buttons. Wrap a phrase in **double asterisks** for bold, or *single asterisks* for italic.',
+          multiline: true,
+        }),
+        aboutPara1: fields.text({
+          label: 'About — paragraph 1 (left)',
+          description:
+            'Left paragraph in the About section. The opening phrase is wrapped in **double asterisks** so it renders bold; keep that if you want the bold lead-in.',
+          multiline: true,
+        }),
+        aboutPara2: fields.text({
+          label: 'About — paragraph 2 (right)',
+          description: 'Right paragraph in the About section.',
+          multiline: true,
+        }),
+      },
+    }),
     downloads: singleton({
       label: 'CV / Downloads',
       path: 'content/downloads',

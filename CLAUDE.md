@@ -204,8 +204,15 @@ files are now the **typed read layer**, not the data itself.
 | Case studies | `content/work/*.json` | `lib/caseStudies.ts` → `getCaseStudies()` |
 | Experience | `content/experience/*.json` | `lib/experience.ts` → `getExperience()` |
 | Hero stats, Skills, Brands | `content/{hero-stats,skills,brands}.json` | `lib/siteData.ts` |
+| Home body copy (hero intro + 2 About paras) | `content/home-copy.json` | `lib/siteData.ts` → `getHomeCopy()` |
 
 Rules that still hold:
+- **Home body copy is CMS-editable, formatting included.** The three home
+  paragraphs live in `content/home-copy.json` (Keystatic → **Home Copy**) and are
+  rendered through `renderInline` (`lib/richText.tsx`): `**bold**` → `<strong>`,
+  `*italic*` → `<em>`. No raw HTML is interpreted. Each field falls back to
+  `DEFAULT_HOME_COPY` in `siteData.ts` if left blank, so a paragraph is never
+  empty. `page.tsx` fetches it once and passes it to `Hero`/`About` as props.
 - **Data-only Keystatic entries are single `.json` files** (`content/work/wagamama.json`),
   not `<slug>/index.json` directories.
 - **Reader functions are async** — the section components that consume them are

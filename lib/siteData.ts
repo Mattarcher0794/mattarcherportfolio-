@@ -42,6 +42,40 @@ export async function getMarqueeSpeed(): Promise<number> {
   return data?.marqueeSpeed || 60
 }
 
+export interface HomeCopy {
+  heroBody: string
+  aboutPara1: string
+  aboutPara2: string
+}
+
+/**
+ * Fallback home copy, used per-field whenever the Keystatic entry is empty.
+ * Keeps the site rendering its intended copy even before anything is authored
+ * in the CMS. `**bold**` / `*italic*` are rendered via `renderInline`.
+ */
+const DEFAULT_HOME_COPY: HomeCopy = {
+  heroBody:
+    'Shipping high-impact digital products across financial services, retail, healthtech and the public sector, from zero-to-one consumer apps to enterprise AI automation. Currently leading a strategic platform outcome at Lloyds Banking Group, with COO-level visibility.',
+  aboutPara1:
+    "**9+ years leading cross-functional teams**, owning the full product lifecycle across both consultancy and embedded leadership. I've worked directly with everyone from consumers and patients through to brokers, relationship managers and BDMs.",
+  aboutPara2:
+    "Most recently I designed and built an internal AI product-development programme, upskilling teams on spec-driven development and putting AI to work in how products get made. It's now being piloted with a client.",
+}
+
+/**
+ * The three editable home-page body paragraphs (hero intro + two About paras).
+ * Falls back to DEFAULT_HOME_COPY field-by-field so a blank CMS field never
+ * leaves an empty paragraph on the page.
+ */
+export async function getHomeCopy(): Promise<HomeCopy> {
+  const data = await reader.singletons.homeCopy.read()
+  return {
+    heroBody: data?.heroBody?.trim() || DEFAULT_HOME_COPY.heroBody,
+    aboutPara1: data?.aboutPara1?.trim() || DEFAULT_HOME_COPY.aboutPara1,
+    aboutPara2: data?.aboutPara2?.trim() || DEFAULT_HOME_COPY.aboutPara2,
+  }
+}
+
 /** Built-in CV, used whenever no CV has been uploaded via Keystatic. */
 const DEFAULT_CV_HREF = '/matt-archer-cv.pdf'
 

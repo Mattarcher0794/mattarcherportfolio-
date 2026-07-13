@@ -9,18 +9,18 @@ import Timeline from '@/components/sections/Timeline'
 import Logos from '@/components/sections/Logos'
 import Contact from '@/components/sections/Contact'
 import Interactions from '@/components/ui/Interactions'
-import { getCvHref } from '@/lib/siteData'
+import { getCvHref, getHomeCopy } from '@/lib/siteData'
 
 export default async function Home() {
-  const cvHref = await getCvHref()
+  const [cvHref, homeCopy] = await Promise.all([getCvHref(), getHomeCopy()])
 
   return (
     <>
       <Navigation cvHref={cvHref} />
       <main>
-        <Hero cvHref={cvHref} />
+        <Hero cvHref={cvHref} heroBody={homeCopy.heroBody} />
         <Marquee />
-        <About />
+        <About para1={homeCopy.aboutPara1} para2={homeCopy.aboutPara2} />
         <SelectedWork />
         <Skills />
         <Timeline />
