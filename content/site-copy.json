@@ -1,6 +1,6 @@
 {
   "default": {
-    "heroTag": "Available for work · Oct 2026",
+    "heroTag": "Open to conversations now",
     "heroLocation": "London, UK",
     "contactHeadlineLead": "Let's work",
     "contactHeadlineEm": "together.",
@@ -18,7 +18,7 @@
       },
       {
         "k": "Availability",
-        "v": "Select work · 2026"
+        "v": "Open to conversations now"
       },
       {
         "k": "Reply within",
@@ -27,7 +27,7 @@
     ]
   },
   "au": {
-    "heroTag": "Available for work · Oct 2026",
+    "heroTag": "Open to select work · Sydney, from Oct '26",
     "heroLocation": "Sydney, NSW",
     "contactHeadlineLead": "Let's talk",
     "contactHeadlineEm": "Sydney.",
@@ -44,8 +44,8 @@
         "v": "London, UK"
       },
       {
-        "k": "Moving to",
-        "v": "Sydney · Sept '26"
+        "k": "Availability",
+        "v": "Select work · Sydney, from Oct '26"
       },
       {
         "k": "Reply within",

@@ -12,7 +12,7 @@ export default async function Timeline() {
         </h2>
         <div className="tl">
           {experience.map((entry) => {
-            const [start, end] = entry.date.split(' — ')
+            const [start, end] = entry.date.split(' – ')
             return (
               <div
                 className={`tl-row${entry.current ? ' current' : ''}`}
@@ -20,7 +20,7 @@ export default async function Timeline() {
               >
                 <div className="tl-date">
                   {start}
-                  <br />— {end}
+                  <br />– {end}
                 </div>
                 <div>
                   <h3 className="tl-role">{entry.role}</h3>

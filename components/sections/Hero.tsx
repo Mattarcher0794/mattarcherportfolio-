@@ -24,7 +24,12 @@ export default async function Hero() {
         </span>
 
         <div className="hero-top">
-          <span className="tag">{site.heroTag}</span>
+          <p className="avail">
+            <span className="avail-dot" aria-hidden="true" />
+            <span className="avail-label">Available</span>
+            <span className="avail-sep" aria-hidden="true">·</span>
+            <span className="avail-value">{site.heroTag}</span>
+          </p>
         </div>
 
         <h1 className="hero-name">
@@ -60,7 +65,7 @@ export default async function Hero() {
         <div>
           <p className="hero-body">
             Shipping high-impact digital products across financial services, retail,
-            healthtech and the public sector — from zero-to-one consumer apps to enterprise
+            healthtech and the public sector, from zero-to-one consumer apps to enterprise
             AI automation. Currently leading a strategic platform outcome at Lloyds Banking
             Group, with COO-level visibility.
           </p>
@@ -69,7 +74,7 @@ export default async function Hero() {
               View my work <span className="arr">↓</span>
             </Link>
             <a href="/matt-archer-cv.pdf" download="Matt-Archer-CV.pdf" className="btn">
-              Download CV <span className="arr">↗</span>
+              Download CV <span className="arr">↓</span>
             </a>
           </div>
         </div>
