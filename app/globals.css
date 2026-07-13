@@ -429,9 +429,14 @@ nav.top.scrolled {
 .hero-stats {
   position: relative;
   z-index: 1;
-  display: flex;
-  gap: 40px;
-  flex-wrap: wrap;
+  /* Fixed grid cells (not content-sized flex) so each counter animates in
+     place — a growing number never pushes its neighbours. minmax(0, …) lets
+     the tracks shrink on narrower laptops instead of overflowing. */
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 180px));
+  justify-content: start;
+  column-gap: 40px;
+  row-gap: 26px;
   margin-top: 30px;
   padding-top: 26px;
   border-top: 1px solid var(--rule-2);
@@ -448,6 +453,9 @@ nav.top.scrolled {
   letter-spacing: -0.02em;
   color: var(--ink);
   line-height: 1;
+  /* Equal-width figures so digits don't shimmer as the value counts up. */
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
 }
 .stat-label {
   font-family: var(--mono);
