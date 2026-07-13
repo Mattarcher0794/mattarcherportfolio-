@@ -19,6 +19,22 @@ export default function Interactions() {
 
     const cleanups: Array<() => void> = []
 
+    // ── Freeze motion during pinch-zoom ────────────────────────────────────
+    // Continuous animation while the visual viewport is being scaled is what
+    // makes mobile pinch-zoom judder. When zoomed in (scale > 1) we add
+    // `is-zooming` to <html>, which pauses CSS animations and halts the JS
+    // marquee loop. Zoom stays fully available — we just stop animating during
+    // it. (We can't disable zoom on iOS Safari anyway; it ignores user-scalable.)
+    const vv = window.visualViewport
+    const onZoom = () => {
+      document.documentElement.classList.toggle('is-zooming', !!vv && vv.scale > 1.01)
+    }
+    if (vv) {
+      vv.addEventListener('resize', onZoom)
+      onZoom()
+      cleanups.push(() => vv.removeEventListener('resize', onZoom))
+    }
+
     // ── Scroll reveal ──────────────────────────────────────────────────────
     const revealTargets = Array.from(
       document.querySelectorAll<HTMLElement>('.section, .case, .tl-row, .logo-cell')
@@ -161,6 +177,13 @@ export default function Interactions() {
         mqTrack.style.transform = `translateX(${offset}px)`
       }
       const frame = (now: number) => {
+        // Hold still (no transform writes) while the user is pinch-zoomed;
+        // keep `last` current so there's no jump on resume.
+        if (document.documentElement.classList.contains('is-zooming')) {
+          last = now
+          raf = requestAnimationFrame(frame)
+          return
+        }
         const dt = Math.min((now - last) / 1000, 0.05)
         last = now
         if (!dragging && !prefersReduced) offset -= speed * dt

@@ -1437,6 +1437,15 @@ footer .row {
   }
 }
 
+/* While pinch-zoomed (class toggled from JS via the visualViewport API), pause
+   every animation so the zoom/pan gesture stays smooth instead of juddering.
+   Zoom itself is untouched — iOS Safari won't let us disable it anyway. */
+.is-zooming *,
+.is-zooming *::before,
+.is-zooming *::after {
+  animation-play-state: paused !important;
+}
+
 /* ─── Mobile paint/perf ──────────────────────────────────────────────────────
    `blobPulse` animates border-radius, which forces a repaint every frame. On
    mobile that competes with scroll/pinch-zoom compositing and makes the page
