@@ -118,6 +118,10 @@ nav.top {
   backdrop-filter: blur(12px);
   border-bottom: 1px solid transparent;
   transition: border-color 240ms;
+  /* Own compositing layer — steadies the fixed + backdrop-filter bar during
+     pinch-zoom on mobile (it otherwise repaints/jumps as the visual viewport moves). */
+  transform: translateZ(0);
+  will-change: transform;
 }
 nav.top.scrolled {
   border-bottom-color: var(--rule);
@@ -591,6 +595,19 @@ nav.top.scrolled {
   border-bottom: 1px solid var(--rule);
   background: var(--ink);
   color: var(--bg);
+  /* horizontal drag scrubs the ticker; vertical gestures still scroll the page */
+  touch-action: pan-y;
+}
+/* When the JS scroller takes over: grabbable, and the CSS keyframe steps aside */
+.marquee.is-interactive {
+  cursor: grab;
+}
+.marquee.is-dragging {
+  cursor: grabbing;
+}
+.marquee.is-interactive .marquee-track {
+  animation: none;
+  will-change: transform;
 }
 .marquee-track {
   display: flex;
@@ -625,6 +642,12 @@ nav.top.scrolled {
 @media (prefers-reduced-motion: reduce) {
   .marquee-track {
     animation: none;
+  }
+}
+/* No-JS fallback: the ticker moves faster on mobile (JS scroller overrides this) */
+@media (max-width: 720px) {
+  .marquee-track {
+    animation-duration: 20s;
   }
 }
 
@@ -1400,5 +1423,18 @@ footer .row {
 @media (hover: none) {
   .cursor-follow {
     display: none;
+  }
+}
+
+/* ─── Mobile paint/perf ──────────────────────────────────────────────────────
+   `blobPulse` animates border-radius, which forces a repaint every frame. On
+   mobile that competes with scroll/pinch-zoom compositing and makes the page
+   feel jumpy. The blobs keep their organic shape — they just stop pulsing on
+   small screens. (Placed last so it wins over every blobPulse rule above.) */
+@media (max-width: 720px) {
+  .mark .blob,
+  .hblob-inner,
+  .contact-block::before {
+    animation: none;
   }
 }
