@@ -1,6 +1,6 @@
 {
   "default": {
-    "heroTag": "October 26",
+    "heroTag": "October '26",
     "heroLocation": "London, UK",
     "contactHeadlineLead": "Let's work",
     "contactHeadlineEm": "together.",
@@ -27,7 +27,7 @@
     ]
   },
   "au": {
-    "heroTag": "Open to select work · Sydney, from Oct '26",
+    "heroTag": "October '26",
     "heroLocation": "Sydney, NSW",
     "contactHeadlineLead": "Let's talk",
     "contactHeadlineEm": "Sydney.",
