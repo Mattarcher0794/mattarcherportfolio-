@@ -61,75 +61,76 @@ export default function Interactions() {
       cleanups.push(() => io.disconnect())
     }
 
-    // ── Selected Work: "deal and settle" entrance ─────────────────────────
-    // Cards start as a fanned deck (collapsed, tilted, off-screen) and deal out
-    // into the readable list when the section scrolls in. No JS / reduced motion
-    // leaves them in their natural, fully-visible positions.
+    // ── Selected Work: per-card "deal in" ─────────────────────────────────
+    // Each card deals itself into place (rise + alternating tilt + settle) as it
+    // scrolls into view, so the motion is always on the card the reader is
+    // looking at. Reader-paced (scrubbed) and latched per card. No JS / reduced
+    // motion leaves the cards in their natural, fully-visible positions.
     const workSection = document.querySelector<HTMLElement>('#work')
     if (!prefersReduced && workSection) {
       const cards = Array.from(workSection.querySelectorAll<HTMLElement>('.case'))
       if (cards.length) {
         const narrow = window.matchMedia('(max-width: 720px)').matches
-        const peek = narrow ? 10 : 16
-        const rotStep = narrow ? 2 : 4
-        const scaleStep = narrow ? 0.03 : 0.05
-        const baseTop = cards[0].offsetTop
-        // Per-card deck geometry: how far to collapse up onto the top card, the
-        // fan tilt, and how much to shrink / fade behind the leader.
-        const deck = cards.map((c, i) => ({
-          y: baseTop + i * peek - c.offsetTop,
-          rot: i === 0 ? 0 : i % 2 === 1 ? rotStep : -rotStep,
-          scaleAmt: i * scaleStep,
-          opAmt: i * 0.16,
-        }))
+        const rise = narrow ? 40 : 56
+        const tiltDeg = narrow ? 3 : 5
 
-        // Scroll-scrubbed deal: the deck deals out as the reader scrolls it up
-        // through a band, so the motion is paced by (and always seen by) them.
-        // Progress latches, so once dealt the cards never re-stack on the way
-        // back up. Each card is staggered and eased so its landing reads.
-        const STAGGER = 0.16
-        const denom = 1 - (cards.length - 1) * STAGGER
-        let latched = 0
-        let done = false
-        const applyDeal = () => {
-          if (done) return
-          const vh2 = window.innerHeight
-          const start = vh2 * 0.72 // deck-top position where the deal begins
-          const band = vh2 * 0.6 // scroll distance to fully deal (larger = slower)
-          const raw = (start - cards[0].getBoundingClientRect().top) / band
-          latched = Math.max(latched, Math.min(1, Math.max(0, raw)))
-          cards.forEach((c, i) => {
-            const cp = Math.max(0, Math.min(1, (latched - i * STAGGER) / denom))
-            const inv = Math.pow(1 - cp, 3) // ease-out: 1 at deck, 0 when settled
-            const d = deck[i]
-            c.style.transform = `translateY(${(d.y * inv).toFixed(1)}px) rotate(${(
-              d.rot * inv
-            ).toFixed(2)}deg) scale(${(1 - inv * d.scaleAmt).toFixed(4)})`
-            c.style.opacity = `${(1 - inv * d.opAmt).toFixed(3)}`
-            c.style.zIndex = `${cards.length - i}`
+        // Key progress on each card's NATURAL document top, captured before any
+        // transform (reading a transformed rect would feed back on itself).
+        const state = cards.map((c, i) => ({
+          el: c,
+          top: 0,
+          tilt: (i % 2 === 0 ? -1 : 1) * tiltDeg,
+          done: false,
+        }))
+        const measure = () => {
+          state.forEach((s) => {
+            s.top = s.el.getBoundingClientRect().top + window.scrollY
           })
-          if (latched >= 1) {
-            // Fully dealt: drop the inline overrides so the hover lift works again.
-            done = true
-            cards.forEach((c) => {
-              c.style.transform = ''
-              c.style.opacity = ''
-              c.style.zIndex = ''
-              c.style.transition = ''
-            })
-          }
         }
-        // Kill the base 300ms transition during the scrub so the cards track
-        // scroll 1:1; the ease-out lives in the progress mapping. Restored on done.
+
+        const update = () => {
+          const vh2 = window.innerHeight
+          const enter = vh2 * 0.82 // card top here -> just entering (progress 0)
+          const settle = vh2 * 0.4 // card top here -> settled (progress 1)
+          state.forEach((s) => {
+            if (s.done) return
+            const viewTop = s.top - window.scrollY
+            const p = Math.max(0, Math.min(1, (enter - viewTop) / (enter - settle)))
+            const inv = Math.pow(1 - p, 3) // ease-out: 1 at the dealt pose, 0 settled
+            s.el.style.transform = `translateY(${(inv * rise).toFixed(1)}px) rotate(${(
+              inv * s.tilt
+            ).toFixed(2)}deg) scale(${(1 - inv * 0.06).toFixed(4)})`
+            s.el.style.opacity = `${(1 - inv * 0.6).toFixed(3)}`
+            if (p >= 1) {
+              // Settled: drop the inline overrides so the hover lift works again.
+              s.done = true
+              s.el.style.transform = ''
+              s.el.style.opacity = ''
+              s.el.style.transition = ''
+            }
+          })
+        }
+        const onResize = () => {
+          // Clear live transforms so measurement reads natural layout, then reapply.
+          state.forEach((s) => {
+            if (!s.done) s.el.style.transform = ''
+          })
+          measure()
+          update()
+        }
+
+        // Kill the base 300ms transition during the deal so cards track scroll
+        // 1:1; the ease-out lives in the progress mapping. Restored on settle.
         cards.forEach((c) => {
           c.style.transition = 'none'
         })
-        applyDeal() // initial state: deck when below the fold, or paced-to-position if already in view
-        window.addEventListener('scroll', applyDeal, { passive: true })
-        window.addEventListener('resize', applyDeal)
+        measure()
+        update() // initial: below-fold cards get the dealt pose; in-view cards settle
+        window.addEventListener('scroll', update, { passive: true })
+        window.addEventListener('resize', onResize)
         cleanups.push(() => {
-          window.removeEventListener('scroll', applyDeal)
-          window.removeEventListener('resize', applyDeal)
+          window.removeEventListener('scroll', update)
+          window.removeEventListener('resize', onResize)
         })
       }
     }
