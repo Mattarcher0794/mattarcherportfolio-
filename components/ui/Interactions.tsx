@@ -121,9 +121,13 @@ export default function Interactions() {
             640 + (cards.length - 1) * 90 + 250
           )
         }
+        // Key the trigger on the deck itself (the first card), not the section
+        // top. The section opens with a kicker, heading and intro, so the deck
+        // sits well below the section top; triggering on the section would deal
+        // the cards while they are still off-screen.
         const onDealScroll = () => {
           if (hasDealt) return
-          if (workSection.getBoundingClientRect().top < window.innerHeight * 0.82) {
+          if (cards[0].getBoundingClientRect().top < window.innerHeight * 0.75) {
             deal()
           }
         }
