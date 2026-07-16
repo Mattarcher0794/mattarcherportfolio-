@@ -1,8 +1,8 @@
 ---
 title: "Matt Archer Portfolio — Product Requirements (Bold Merge)"
-status: draft
+status: living
 created: 2026-07-09
-updated: 2026-07-09
+updated: 2026-07-16
 ---
 
 # PRD: Matt Archer Portfolio
@@ -20,6 +20,13 @@ decisions — audience, goals, scope, success. Where the two touch design, defer
 to CLAUDE.md. The homepage is already built and shipped on the Bold Merge design;
 this document also records remaining scope so downstream planning (UX,
 architecture, epics/stories) has a single product reference.
+
+**Stack (for context; build details in CLAUDE.md):** Next.js 16 (App Router),
+TypeScript, Tailwind v4 (CSS-first, no config file), Keystatic (git-backed CMS,
+content in `content/*.json`), Framer Motion plus a lightweight vanilla scroll /
+IntersectionObserver enhancement layer, deployed on Vercel. Live at
+**mattarcher.me**. As of July 2026 the homepage is fully built and shipped,
+including the scroll-scrub motion language and the monochrome SVG brand wall.
 
 ---
 
@@ -148,6 +155,7 @@ Features grouped by surface. FRs carry globally-unique stable IDs. These describ
 - **FR-13** The metrics panel colour rotates per card (`ink` / `moss` / `peach`).
 - **FR-14** Each card links to its case study detail page (`/work/<slug>`).
 - **FR-15** A card communicates the outcome without the visitor clicking through.
+- **FR-15a** As each card scrolls into view it performs a per-card "deal-in" (rise, alternating tilt, scale, fade, ease-out), scroll-scrubbed and latched per card, reduced-motion-safe. A stacked "deck" was tried and rejected (invisible at card scale). See CLAUDE.md Animation Rules.
 
 ### 4.4 Case Study Detail Pages *(planned — not yet built)*
 
@@ -170,16 +178,23 @@ Features grouped by surface. FRs carry globally-unique stable IDs. These describ
 ### 4.6 Experience Timeline
 
 - **FR-25** Render roles from `lib/experience.ts` as year-marked rows (date /
-  role+company / projects), animated on scroll, with the current role flagged.
+  role+company / projects), with the current role flagged. A moss spine draws
+  down and ignites each node as the timeline scrolls (reduced-motion renders it
+  fully drawn); hover applies a subtle background tint, no layout shift.
 - **FR-26** Subway, British Airways, Thomas Cook appear here (nested under the PM
-  role), not as headline case cards.
+  role), not as headline case cards. *(Planned: add Edenred and McDonald's HQ
+  from the latest CV.)*
 
-### 4.7 Brand Logos
+### 4.7 Brand Logos ("Good company")
 
-- **FR-27** Display a grid of brands worked with: Lloyds, Wagamama, HCA, Subway,
-  British Airways, AND Digital.
-- **FR-28** *(planned)* Replace current styled-text treatment with monochrome SVG
-  logos.
+- **FR-27** Display a grid of brands worked with. Current set and order
+  (Keystatic-editable in `content/brands.json`): AND Digital, Lloyds Banking
+  Group, wagamama, Subway, Edenred, HCA Healthcare UK, British Airways,
+  McDonald's.
+- **FR-28** Render each as an inline **monochrome SVG** (`lib/brandLogos.tsx`,
+  flattened to `currentColor` so it inherits the cell ink and fills to the
+  surface colour on the moss hover), with per-brand optical sizing and a
+  styled-text fallback for any brand without a mapped SVG. *(Shipped.)*
 
 ### 4.8 Contact
 
@@ -202,7 +217,7 @@ Features grouped by surface. FRs carry globally-unique stable IDs. These describ
 - **No AI chatbot** in v1 (v2 roadmap — App Router already supports a future
   `/api/chat`).
 - **No blog / thought-leadership** surface in v1 (keep routing clean for later MDX).
-- **No third-party analytics** in v1 (Vercel Analytics planned for v1.5).
+- **No third-party analytics** beyond Vercel Analytics (now added, `<Analytics />` in `app/layout.tsx`; owner still needs to enable Web Analytics in the Vercel dashboard for data to appear).
 - **No contact form, no Calendly**, ever-optional; not in v1.
 - **No light/dark toggle** — the warm Bold Merge theme is the only mode.
 
@@ -213,15 +228,19 @@ Features grouped by surface. FRs carry globally-unique stable IDs. These describ
 ### 6.1 In Scope (shipped)
 
 Homepage long-scroll on Bold Merge: Navigation, Hero (geo + stats), Marquee,
-About, Selected Work (3 cards), Skills, Timeline, Brand logos, Contact, Footer;
-geo-targeting via `proxy.ts`; CV direct download; base + geo-targeted SEO metadata.
+About, Selected Work (3 cards, per-card deal-in), Skills, Timeline (line-draw),
+monochrome SVG brand logos, Contact, Footer; the scroll-scrub motion language
+(timeline line-draw, hero drift, Selected Work deal-in); geo-targeting via
+`proxy.ts`; Keystatic CMS for copy/metrics/brands/CV; Vercel Analytics; CV direct
+download; base + geo-targeted SEO metadata.
 
 ### 6.2 Out of Scope for MVP (remaining)
 
 - Case study detail pages `/work/<slug>` (FR-16–21).
-- SVG brand logos (FR-28).
 - `next-sitemap` generation wired to build; `not-found.tsx` 404 page.
 - Open Graph share image asset.
+- Experience-timeline additions from the latest CV (Edenred, McDonald's HQ).
+- Keystatic GitHub-storage switch for the deployed `/keystatic` admin.
 
 ---
 
@@ -253,7 +272,10 @@ Questions.)*
   trusting FR-1)*
 - **OQ-3** Are the case-study detail pages needed before launch, or can the
   homepage ship and cards temporarily deep-link to the relevant section? *(scope)*
-- **OQ-4** Source/licensing for monochrome brand SVGs (FR-28). *(non-blocker)*
+- **OQ-4** *Resolved.* Monochrome brand SVGs were sourced from Wikimedia Commons
+  and official brand sites, flattened to `currentColor`; owner authorised
+  displaying the marks for the "worked with" wall. Thomas Cook was dropped (no
+  clean vector) and Edenred added in its place.
 - **OQ-5** Confirm all quoted metrics are cleared for public use (esp. Lloyds
   £5.8M / COO-level references). *(blocker — reputational/employer risk)*
 
