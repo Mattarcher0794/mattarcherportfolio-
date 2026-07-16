@@ -17,6 +17,7 @@ export default function Navigation({
   caseStudies?: NavCaseStudy[]
 }) {
   const [scrolled, setScrolled] = useState(false)
+  const [nameShown, setNameShown] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const pathname = usePathname()
   // Off the homepage, section anchors must jump home first (`/#work`), not to a
@@ -25,7 +26,13 @@ export default function Navigation({
   const base = onHome ? '' : '/'
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12)
+    const onScroll = () => {
+      const y = window.scrollY
+      setScrolled(y > 12)
+      // The wordmark fades in once the hero name has cleared (~60% of the first
+      // viewport), so it never duplicates the big hero headline on the homepage.
+      setNameShown(y > window.innerHeight * 0.6)
+    }
     window.addEventListener('scroll', onScroll, { passive: true })
     onScroll()
     return () => window.removeEventListener('scroll', onScroll)
@@ -60,7 +67,7 @@ export default function Navigation({
           <span className="blob">
             <span>MA</span>
           </span>
-          <span className="name">Matt Archer</span>
+          <span className={`name${nameShown ? ' shown' : ''}`}>Matt Archer</span>
         </Link>
         <div className="nav-links">
           {hasWorkMenu ? (

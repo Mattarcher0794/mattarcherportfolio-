@@ -491,8 +491,15 @@ mark + burger). Enriched the Skills "AI & methods" column 3 → 6 pills (added
 Responsible AI (HITL & evals), Agentic workflows, AI enablement & upskilling) so the
 three columns balance ~7/6/6; BMAD kept method-generic, flagship GenAI pill keeps its
 serif accent. Replaced the nav dropdown's filled `▾` glyph with a thin rounded-cap
-SVG chevron (`--ink-dim`). Note: hit the stale-`.next` dev-CSS gotcha mid-session
-(new CSS not applied until `rm -rf .next` + restart) — see [[next-dev-cache-gotcha]].*
+SVG chevron (`--ink-dim`). Nav wordmark de-duplication: the "Matt Archer" text
+next to the `MA` blob is now hidden at the top of every page and fades in
+(`.mark .name.shown`, opacity-only, no layout shift) once scroll passes ~60% of the
+first viewport, so it no longer duplicates the big hero headline; the blob + its
+`aria-label` carry identity meanwhile. Note: hit the stale-`.next` dev-CSS gotcha
+twice mid-session (new CSS/JS not applied until `rm -rf .next` + restart), and the
+Claude preview's `getComputedStyle`/scroll were unreliable (pinned scrollY to 0,
+returned stale computed styles even for inline opacity) — verify via real
+screenshots + the CSSOM, not `getComputedStyle`. See [[next-dev-cache-gotcha]].*
 
 *Follow-ups: move Keystatic image fields from path-based to `fields.image` and
 switch the deployed `/keystatic` admin to GitHub storage for drag-drop CMS uploads;

@@ -184,6 +184,18 @@ nav.top.scrolled {
   font-size: 19px;
   letter-spacing: -0.01em;
   color: var(--ink);
+  /* Hidden at the top of every page (the hero carries the name); fades in on
+     scroll once the hero has cleared. Opacity-only so the layout never shifts. */
+  opacity: 0;
+  transition: opacity 320ms ease;
+}
+.mark .name.shown {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mark .name {
+    transition: none;
+  }
 }
 .nav-links {
   display: flex;
