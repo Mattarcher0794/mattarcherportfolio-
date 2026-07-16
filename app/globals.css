@@ -1337,7 +1337,10 @@ nav.top.scrolled {
   height: 19px;
 }
 .logo-cell .logo-mark[data-brand="lloyds-banking-group"] svg {
-  height: 21px;
+  height: 34px;
+}
+.logo-cell .logo-mark[data-brand="hca"] svg {
+  height: 32px;
 }
 .logo-cell .logo-mark[data-brand="subway"] svg {
   height: 30px;
