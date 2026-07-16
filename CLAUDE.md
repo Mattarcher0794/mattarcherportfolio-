@@ -482,9 +482,19 @@ all three studies; `Navigation` now takes a `caseStudies` prop and uses
 first-person, no agency voice, no em dashes; drafts kept in
 `docs/case-study-drafts.md`.*
 
-*Follow-ups: mobile nav has no menu (links hidden below 720px, CV button only) so
-the Work dropdown is desktop-only — a mobile menu would make case studies reachable
-on mobile nav; move Keystatic image fields from path-based to `fields.image` and
+*July 2026 (mobile nav + skills session): added the mobile menu — a hamburger
+below 720px (`.nav-burger`, animates to an X) opening a fixed slide-down panel
+(`.nav-mobile`) with the three case studies, All work, About, Contact and a
+Download CV button; `menuOpen` state locks body scroll and closes on Escape / route
+change / link tap. On mobile the CV button moves out of the bar into the menu (bar =
+mark + burger). Enriched the Skills "AI & methods" column 3 → 6 pills (added
+Responsible AI (HITL & evals), Agentic workflows, AI enablement & upskilling) so the
+three columns balance ~7/6/6; BMAD kept method-generic, flagship GenAI pill keeps its
+serif accent. Replaced the nav dropdown's filled `▾` glyph with a thin rounded-cap
+SVG chevron (`--ink-dim`). Note: hit the stale-`.next` dev-CSS gotcha mid-session
+(new CSS not applied until `rm -rf .next` + restart) — see [[next-dev-cache-gotcha]].*
+
+*Follow-ups: move Keystatic image fields from path-based to `fields.image` and
 switch the deployed `/keystatic` admin to GitHub storage for drag-drop CMS uploads;
 experience-timeline additions from the latest CV (Edenred, McDonald's HQ). Pending
 owner action: enable Web

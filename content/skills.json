@@ -38,10 +38,22 @@
       "skills": [
         {
           "label": "GenAI product development",
+          "ai": true
+        },
+        {
+          "label": "Responsible AI (HITL & evals)",
+          "ai": false
+        },
+        {
+          "label": "Agentic workflows",
           "ai": false
         },
         {
           "label": "Spec-driven development",
+          "ai": false
+        },
+        {
+          "label": "AI enablement & upskilling",
           "ai": false
         },
         {
