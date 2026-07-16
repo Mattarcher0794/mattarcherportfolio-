@@ -86,21 +86,17 @@ export default function Interactions() {
           c.style.zIndex = `${cards.length - i}`
         })
 
-        // Only pre-collapse into the deck when the section is below the fold, so
-        // the collapse itself is never seen (no first-paint flash). Suppress the
-        // transition while collapsing so only the deal (not the collapse) plays.
-        const belowFold =
-          workSection.getBoundingClientRect().top > window.innerHeight * 0.9
-        if (belowFold) {
-          cards.forEach((c) => {
-            c.style.transition = 'none'
-            c.classList.add('deck')
-          })
-          void workSection.offsetHeight // reflow to lock the deck in instantly
-          cards.forEach((c) => {
-            c.style.transition = ''
-          })
-        }
+        // Collapse into the deck now. On a normal load the section is below the
+        // fold, so this is invisible; suppress the transition so only the deal
+        // (not the collapse) ever animates.
+        cards.forEach((c) => {
+          c.style.transition = 'none'
+          c.classList.add('deck')
+        })
+        void workSection.offsetHeight // reflow to lock the deck in instantly
+        cards.forEach((c) => {
+          c.style.transition = ''
+        })
 
         const clearCard = (c: HTMLElement) => {
           c.classList.remove('deck', 'dealt')
@@ -110,25 +106,34 @@ export default function Interactions() {
           )
         }
 
-        const dealIo = new IntersectionObserver(
-          (entries, obs) => {
-            entries.forEach((e) => {
-              if (!e.isIntersecting) return
-              obs.disconnect()
-              const dealt = cards.filter((c) => c.classList.contains('deck'))
-              dealt.forEach((c) => c.classList.add('dealt'))
-              // Strip the deck/deal classes once the last card has settled, so the
-              // hover lift (the base .case transform) works normally again.
-              window.setTimeout(
-                () => dealt.forEach(clearCard),
-                640 + (cards.length - 1) * 90 + 250
-              )
-            })
-          },
-          { rootMargin: '-12% 0px -12% 0px' }
-        )
-        dealIo.observe(workSection)
-        cleanups.push(() => dealIo.disconnect())
+        // Deal when the section rises into the lower part of the viewport. A
+        // scroll listener (not IntersectionObserver) so the initial synchronous
+        // check also covers the case where the section is already on screen at
+        // load (e.g. a restored scroll position). Fires once, then strips the
+        // deck/deal classes so the hover lift resumes.
+        let hasDealt = false
+        const deal = () => {
+          if (hasDealt) return
+          hasDealt = true
+          cards.forEach((c) => c.classList.add('dealt'))
+          window.setTimeout(
+            () => cards.forEach(clearCard),
+            640 + (cards.length - 1) * 90 + 250
+          )
+        }
+        const onDealScroll = () => {
+          if (hasDealt) return
+          if (workSection.getBoundingClientRect().top < window.innerHeight * 0.82) {
+            deal()
+          }
+        }
+        window.addEventListener('scroll', onDealScroll, { passive: true })
+        window.addEventListener('resize', onDealScroll)
+        onDealScroll()
+        cleanups.push(() => {
+          window.removeEventListener('scroll', onDealScroll)
+          window.removeEventListener('resize', onDealScroll)
+        })
       }
     }
 
