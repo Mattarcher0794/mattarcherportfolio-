@@ -26,5 +26,47 @@
       "value": "73k",
       "label": "Online bookings a year"
     }
-  ]
+  ],
+  "challenge": {
+    "body": "HCA's private primary-care booking ran on a third-party practice-management system. It did not match their recent rebrand, and it did not match the standard of care patients received inside the clinic. Under 30% of bookings were happening online. Before HCA invested in marketing and scaled the business, they needed to own their digital front door and make it feel as premium as the service behind it.",
+    "images": []
+  },
+  "approach": {
+    "body": "I ran end-to-end patient discovery, researching directly with patients to find the real friction in the acquisition funnel rather than guessing at it internally. From there I owned the roadmap from zero to one across both web and a native app, and reimagined the online booking journey so it mirrored HCA's premium in-clinic experience.",
+    "images": [
+      {
+        "src": "/images/work/hca-home.png",
+        "alt": "HCA app home screen with a book appointment call to action",
+        "caption": "The reimagined front door: book and manage care in a couple of taps."
+      }
+    ]
+  },
+  "whatWeBuilt": {
+    "body": "A new native app and web experience for booking GP appointments and health screening, managing results, and handling subscriptions. The app and web were built on a shared component framework so both platforms stayed consistent and could evolve together. We launched online booking for health screenings as part of it.",
+    "images": [
+      {
+        "src": "/images/work/hca-book.png",
+        "alt": "Appointment type screen showing plan appointments and self-funded health screening",
+        "caption": "Booking, including self-funded health screening from £123."
+      },
+      {
+        "src": "/images/work/hca-calendar.png",
+        "alt": "Calendar screen listing upcoming and past appointments",
+        "caption": "Every appointment, upcoming and past, in one place."
+      },
+      {
+        "src": "/images/work/hca-health.png",
+        "alt": "Your health data screen showing height, weight and blood pressure",
+        "caption": "Results and health data, owned by the patient."
+      }
+    ]
+  },
+  "outcomes": {
+    "body": "Online bookings grew by **41%**, from under 30% to nearly half of all primary care bookings. The work unlocked **£6M+ in screening revenue** and now handles around **73k online bookings a year**.",
+    "images": []
+  },
+  "learnings": {
+    "body": "In premium healthcare, the digital experience has to match the clinical one, or it quietly erodes trust in the brand. Anchoring the roadmap on funnel friction I had actually researched with patients, rather than internal assumptions, is what moved the booking numbers.",
+    "images": []
+  }
 }

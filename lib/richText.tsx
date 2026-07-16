@@ -33,3 +33,16 @@ export function renderInline(text: string): ReactNode[] {
 
   return nodes
 }
+
+/**
+ * Multi-paragraph body renderer for CMS-authored long-form copy (case-study
+ * narrative sections). Splits on blank lines into <p> elements and runs
+ * renderInline on each, so `**bold**` / `*italic*` still work within a
+ * paragraph. Returns null for empty input so callers can skip empty sections.
+ */
+export function renderBody(text: string): ReactNode {
+  const trimmed = (text ?? '').trim()
+  if (!trimmed) return null
+  const paragraphs = trimmed.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean)
+  return paragraphs.map((para, i) => <p key={i}>{renderInline(para)}</p>)
+}

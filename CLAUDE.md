@@ -158,9 +158,10 @@ Base unit is 4px. Use Tailwind's spacing scale throughout. No arbitrary pixel va
 └── PRD.md                  # Product-decision reference
 ```
 
-> Note: case-study detail pages (`app/work/<slug>/page.tsx`) and their
-> components are **not yet built** — `SelectedWork` links to `/work/<slug>`.
-> Brand logos are currently rendered as styled text (no SVG assets yet).
+> Note: case-study detail pages are **built** at `app/work/[slug]/page.tsx` (a
+> single statically-generated dynamic route serving all three studies).
+> `SelectedWork` and the nav Work dropdown link to `/work/<slug>`. Brand logos
+> render as inline monochrome SVGs (`lib/brandLogos.tsx`).
 
 ---
 
@@ -445,6 +446,29 @@ timeline line-draw (moss spine fills and nodes ignite on scroll) and a hero blob
 (blobs drift out and fade as the hero leaves). Both are reduced-motion-safe and fully
 static without JS.*
 
-*Follow-ups: case-study detail pages (`/work/<slug>`), SVG brand logos, PRD refresh,
-timeline additions from the latest CV (Edenred, McDonald's HQ placement). Pending
-owner action: enable Web Analytics in the Vercel dashboard for data to appear.*
+*July 2026 (case-study pages session): built the case-study detail pages at
+`app/work/[slug]/page.tsx` — one statically-generated dynamic route (`dynamicParams
+= false`) serving all three studies. The `work` Keystatic collection gained five
+fixed narrative sections (`challenge`, `approach`, `whatWeBuilt`, `outcomes`,
+`learnings`), each an object with a `body` (multiline, rendered via new
+`renderBody` in `richText.tsx` — blank line = new paragraph) plus an optional
+`images` array (`{ src, alt, caption }`, `src` is a plain `/public` path, not a
+`fields.image`, so it is predictable to author and upgradeable later). Page anatomy:
+hero (logo via `brandLogos`/`brandSlug` off the company name) → full-width metrics
+panel (the card's `.case-right` promoted, two-column on desktop) → the five sections
+→ Download CV + wrap-around prev/next. Sections with 3+ images render a full-bleed
+art-directed "showcase band" (`.cs-showcase`: warm sand wash, first image a larger
+anchor, others staggered, snap-filmstrip on mobile); 1–2 images render inline.
+Wagamama + HCA are image-rich (screens in `public/images/work/`), Lloyds is
+prose-only. The nav gained a pure-CSS Work dropdown (hover/`focus-within`) listing
+all three studies; `Navigation` now takes a `caseStudies` prop and uses
+`usePathname` so section anchors resolve to `/#work` off-homepage. Content is
+first-person, no agency voice, no em dashes; drafts kept in
+`docs/case-study-drafts.md`.*
+
+*Follow-ups: mobile nav has no menu (links hidden below 720px, CV button only) so
+the Work dropdown is desktop-only — a mobile menu would make case studies reachable
+on mobile nav; Keystatic image fields are path-based (switch to `fields.image` +
+GitHub storage for drag-drop CMS uploads); PRD refresh; timeline additions from the
+latest CV (Edenred, McDonald's HQ placement). Pending owner action: enable Web
+Analytics in the Vercel dashboard for data to appear.*
