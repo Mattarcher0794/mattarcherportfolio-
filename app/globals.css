@@ -1345,6 +1345,9 @@ nav.top.scrolled {
 .logo-cell .logo-mark[data-brand="and-digital"] svg {
   height: 24px;
 }
+.logo-cell .logo-mark[data-brand="edenred"] svg {
+  height: 46px;
+}
 .logo-cell .logo-mark[data-brand="subway"] svg {
   height: 30px;
 }
