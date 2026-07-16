@@ -32,6 +32,10 @@
     {
       "logo": "McDonalds HQ",
       "marquee": "McDonalds HQ"
+    },
+    {
+      "logo": "Test",
+      "marquee": "Test"
     }
   ]
 }
