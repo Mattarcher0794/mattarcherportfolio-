@@ -37,7 +37,7 @@ export default function Interactions() {
 
     // ── Scroll reveal ──────────────────────────────────────────────────────
     const revealTargets = Array.from(
-      document.querySelectorAll<HTMLElement>('.section, .case, .tl-row, .logo-cell')
+      document.querySelectorAll<HTMLElement>('.section, .tl-row, .logo-cell')
     )
 
     if (prefersReduced) {
@@ -59,6 +59,77 @@ export default function Interactions() {
         io.observe(el)
       })
       cleanups.push(() => io.disconnect())
+    }
+
+    // ── Selected Work: "deal and settle" entrance ─────────────────────────
+    // Cards start as a fanned deck (collapsed, tilted, off-screen) and deal out
+    // into the readable list when the section scrolls in. No JS / reduced motion
+    // leaves them in their natural, fully-visible positions.
+    const workSection = document.querySelector<HTMLElement>('#work')
+    if (!prefersReduced && workSection) {
+      const cards = Array.from(workSection.querySelectorAll<HTMLElement>('.case'))
+      if (cards.length) {
+        const narrow = window.matchMedia('(max-width: 720px)').matches
+        const peek = narrow ? 10 : 16
+        const rotStep = narrow ? 2 : 4
+        const scaleStep = narrow ? 0.03 : 0.05
+        const baseTop = cards[0].offsetTop
+
+        cards.forEach((c, i) => {
+          const collapseY = baseTop + i * peek - c.offsetTop
+          const rot = i === 0 ? 0 : i % 2 === 1 ? rotStep : -rotStep
+          c.style.setProperty('--deal-y', `${collapseY}px`)
+          c.style.setProperty('--deal-rot', `${rot}deg`)
+          c.style.setProperty('--deal-scale', `${(1 - i * scaleStep).toFixed(3)}`)
+          c.style.setProperty('--deal-op', `${(1 - i * 0.16).toFixed(3)}`)
+          c.style.setProperty('--deal-i', `${i}`)
+          c.style.zIndex = `${cards.length - i}`
+        })
+
+        // Only pre-collapse into the deck when the section is below the fold, so
+        // the collapse itself is never seen (no first-paint flash). Suppress the
+        // transition while collapsing so only the deal (not the collapse) plays.
+        const belowFold =
+          workSection.getBoundingClientRect().top > window.innerHeight * 0.9
+        if (belowFold) {
+          cards.forEach((c) => {
+            c.style.transition = 'none'
+            c.classList.add('deck')
+          })
+          void workSection.offsetHeight // reflow to lock the deck in instantly
+          cards.forEach((c) => {
+            c.style.transition = ''
+          })
+        }
+
+        const clearCard = (c: HTMLElement) => {
+          c.classList.remove('deck', 'dealt')
+          c.style.zIndex = ''
+          ;['--deal-y', '--deal-rot', '--deal-scale', '--deal-op', '--deal-i'].forEach(
+            (p) => c.style.removeProperty(p)
+          )
+        }
+
+        const dealIo = new IntersectionObserver(
+          (entries, obs) => {
+            entries.forEach((e) => {
+              if (!e.isIntersecting) return
+              obs.disconnect()
+              const dealt = cards.filter((c) => c.classList.contains('deck'))
+              dealt.forEach((c) => c.classList.add('dealt'))
+              // Strip the deck/deal classes once the last card has settled, so the
+              // hover lift (the base .case transform) works normally again.
+              window.setTimeout(
+                () => dealt.forEach(clearCard),
+                640 + (cards.length - 1) * 90 + 250
+              )
+            })
+          },
+          { rootMargin: '-12% 0px -12% 0px' }
+        )
+        dealIo.observe(workSection)
+        cleanups.push(() => dealIo.disconnect())
+      }
     }
 
     // ── Cursor-following blob + hero parallax (pointer devices only) ────────
