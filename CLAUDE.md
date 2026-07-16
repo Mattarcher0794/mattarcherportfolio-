@@ -113,8 +113,9 @@ Base unit is 4px. Use Tailwind's spacing scale throughout. No arbitrary pixel va
 - Organic "blob" shapes animate via the `blobPulse` keyframe
 - **Timeline line-draw (scroll-scrub):** a moss spine fills as the timeline scrolls through the viewport and each row node ignites as the fill edge passes it. Driven by `--tl-progress` on `.tl` (set by a scroll handler in `Interactions.tsx`); the `.tl.is-scrubbing` class hands fill height and lit state over to scroll. The current role (top) ignites first, and the completed spine is the payoff.
 - **Hero drift (scroll-scrub):** the hero blobs drift up and out and fade as you scroll out of the hero. Pointer parallax writes `--px`/`--py` and the scroll drift writes `--sx`/`--sy`, composed in the `.hblob` transform so the two never clobber each other. Fine-pointer plus motion only.
-- **Always** respect `prefers-reduced-motion`. When set, reveals resolve instantly; the cursor blob, hero parallax, hero drift and stat count-up are disabled; and the timeline renders as a fully drawn line with every node lit.
-- Client-side behaviour (scroll-reveal, cursor-follow blob, hero parallax, hero drift, timeline line-draw, animated stat counters) is centralised in `components/ui/Interactions.tsx`, a single progressive-enhancement layer. Section components stay server-rendered and fully visible without JS. Framer Motion remains available but the Bold Merge interactions are lightweight vanilla + IntersectionObserver.
+- **Selected Work deal-in (scroll-scrub):** each `.case` card deals itself into place (rise, alternating tilt, scale and fade, ease-out) as it scrolls into view. Scroll-scrubbed and latched per card, keyed on each card's *natural* document top (captured before transforming it, to avoid a read-your-own-transform feedback loop). `.case` is excluded from the generic `.reveal` targets so the deal owns those cards. Gentler tilt and rise on mobile.
+- **Always** respect `prefers-reduced-motion`. When set, reveals resolve instantly; the cursor blob, hero parallax, hero drift, Selected Work deal-in and stat count-up are disabled; the timeline renders as a fully drawn line with every node lit; and the case cards render in their natural, fully-visible positions.
+- Client-side behaviour (scroll-reveal, cursor-follow blob, hero parallax, hero drift, timeline line-draw, Selected Work deal-in, animated stat counters) is centralised in `components/ui/Interactions.tsx`, a single progressive-enhancement layer. Section components stay server-rendered and fully visible without JS. Framer Motion remains available but the Bold Merge interactions are lightweight vanilla + IntersectionObserver / scroll handlers.
 
 ---
 
@@ -144,11 +145,12 @@ Base unit is 4px. Use Tailwind's spacing scale throughout. No arbitrary pixel va
 │   │   ├── Logos.tsx
 │   │   └── Contact.tsx      # Reads geo
 │   └── ui/
-│       └── Interactions.tsx # Client PE layer (reveal, cursor, parallax, counters)
+│       └── Interactions.tsx # Client PE layer (reveal, cursor, parallax, counters, scroll-scrubs)
 ├── lib/
 │   ├── content.ts          # ALL geo-targeted copy lives here
 │   ├── caseStudies.ts      # Homepage case-study card data
-│   └── experience.ts       # Timeline / experience entries
+│   ├── experience.ts       # Timeline / experience entries
+│   └── brandLogos.tsx      # Inline monochrome SVG brand logos (currentColor) + brandSlug()
 ├── app/
 │   ├── globals.css         # Design tokens + full class-based design system
 │   └── page.tsx            # Homepage (long scroll)
@@ -161,7 +163,8 @@ Base unit is 4px. Use Tailwind's spacing scale throughout. No arbitrary pixel va
 > Note: case-study detail pages are **built** at `app/work/[slug]/page.tsx` (a
 > single statically-generated dynamic route serving all three studies).
 > `SelectedWork` and the nav Work dropdown link to `/work/<slug>`. Brand logos
-> render as inline monochrome SVGs (`lib/brandLogos.tsx`).
+> render as inline monochrome SVGs (`lib/brandLogos.tsx`), with a styled-text
+> fallback for any brand without a mapped SVG.
 
 ---
 
@@ -274,18 +277,22 @@ Rules that still hold:
 ### Case Study Cards
 - Two-panel card: left = index, company, headline (serif accent on the emphasised clause), description, tags, "Read case study"; right = a bold metrics panel (`dominant` figure + caption + two secondary stats)
 - Panel colour rotates per card via `panelVariant`: `ink` / `moss` / `peach`
-- Data lives in `lib/caseStudies.ts` — three cards: **Lloyds Banking Group**, **Wagamama**, **HCA Healthcare** (Subway now lives in the timeline, not a headline card)
+- Data lives in `lib/caseStudies.ts`: three cards, **Lloyds Banking Group**, **Wagamama**, **HCA Healthcare** (Subway now lives in the timeline, not a headline card)
 - Card must communicate the outcome without the user clicking
+- **Per-card "deal-in" motion:** each card deals itself into place (rise, alternating tilt, scale and fade, ease-out) as it scrolls into view, scroll-scrubbed and latched per card (see Animation Rules). A stacked "deck of 3" was tried and rejected: at viewport-card scale the anchor card never moves and the dealing happens below the fold, so it reads as no motion. Per-card is the fit.
 
 ### Experience Timeline
-- A **design moment** — three-column rows (date / role+company / projects), hover slides the row and grows a moss node
-- Current role flagged with a `· NOW` marker and tinted row
+- A **design moment**: three-column rows (date / role+company / projects) with a moss spine that draws down on scroll and ignites each node (see Animation Rules). Hover applies a subtle background tint, no layout shift (an earlier row-slide caused a jump and was removed).
+- Current role flagged with a `· Now` marker and tinted row
+- Muted / less-prominent projects use `--ink-dim` (cool ink), not `--ink-mute` (warm tan), so the column reads as one consistent hierarchy
 - Data lives in `lib/experience.ts`; projects render in the Instrument Serif italic
 
-### Brand Logos
-- Bordered grid of cells; brand name styled in Bricolage, hover fills moss
-- Currently rendered as **styled text** (SVG assets are a follow-up)
-- Logos: Lloyds Banking Group, Wagamama, HCA, Subway, British Airways, AND Digital
+### Brand Logos ("Good company")
+- Bordered grid of cells; each cell hover-fills moss.
+- **Inline monochrome SVG logos.** `lib/brandLogos.tsx` maps a brand slug (`brandSlug(name)`) to a cleaned inline SVG whose fills are flattened to `currentColor`, so each mark inherits the cell ink colour and flips to the surface colour on the moss hover. `Logos.tsx` renders the SVG via `dangerouslySetInnerHTML`; any brand without a mapped SVG falls back to its styled-text name (so the grid always renders cleanly).
+- Per-brand optical sizing lives in `globals.css` via `.logo-mark[data-brand="<slug>"] svg` (wide wordmarks shorter, compact or badge marks taller) so the wall reads at even visual weight.
+- Current set and order (Keystatic-editable in `content/brands.json`): AND Digital, Lloyds Banking Group (with the horse), wagamama, Subway, Edenred, HCA (HCA Healthcare UK), British Airways, McDonald's. All eight render as SVG.
+- Sourcing rules: use real **vector** SVGs (Wikimedia Commons or the brand's own site), never raster PNGs, then flatten to `currentColor`. Three traps to watch: white-letters-in-a-box logos (drop the box so the letters stand alone, as with AND Digital), filled-badge logos (they become a heavier solid ink mark, as with Edenred), and Inkscape exports that draw via `<use xlink:href>` (keep the `xmlns:xlink` declaration or the logo breaks, as with HCA). EPS and .ai (which is PDF) cannot be converted in this environment; get a real SVG.
 
 ### Skills Section
 - AI-assisted product development must be explicitly listed — the `GenAI product development` pill gets the serif-italic `.ai` accent treatment
@@ -425,9 +432,9 @@ Do not skip steps. Do not build multiple sections in one session without committ
 
 *Last updated: July 2026 — adopted the "Bold Merge" design direction (warm light
 theme, Bricolage/Instrument Serif/Hanken, hero stats, Lloyds as the
-headline case study). The homepage is fully built. `PRD.md` predates this pivot and
-still describes the earlier dark direction — treat this CLAUDE.md as authoritative
-for design/build decisions until the PRD is refreshed.*
+headline case study). The homepage is fully built. `PRD.md` has been refreshed
+(July 2026) to match this direction; treat this CLAUDE.md as authoritative for
+design/build decisions, and `PRD.md` as the product-context reference.*
 
 *July 2026 (later session): HCA case study re-anchored on the booking transformation
 (+41% online bookings, £6M+ screening revenue); home body copy (hero intro + both
@@ -445,6 +452,15 @@ hero name stays uppercase. Added two scroll-scrub interactions in `Interactions.
 timeline line-draw (moss spine fills and nodes ignite on scroll) and a hero blob drift
 (blobs drift out and fade as the hero leaves). Both are reduced-motion-safe and fully
 static without JS.*
+
+*July 2026 (motion + brand-logo session): shipped the Selected Work per-card
+"deal-in" (each case card rises, tilts and settles as it scrolls in; scroll-
+scrubbed, latched per card; a stacked deck was rejected because at card scale the
+dealing happens off-screen). Timeline polish: removed the hover row-jump (now a
+subtle background tint) and recoloured muted projects to `--ink-dim`. The "Good
+company" wall now renders eight inline monochrome SVG logos (`lib/brandLogos.tsx`,
+`currentColor`, per-brand optical sizing, styled-text fallback); Edenred replaced
+Thomas Cook (order: Subway, Edenred, HCA).*
 
 *July 2026 (case-study pages session): built the case-study detail pages at
 `app/work/[slug]/page.tsx` — one statically-generated dynamic route (`dynamicParams
@@ -468,7 +484,8 @@ first-person, no agency voice, no em dashes; drafts kept in
 
 *Follow-ups: mobile nav has no menu (links hidden below 720px, CV button only) so
 the Work dropdown is desktop-only — a mobile menu would make case studies reachable
-on mobile nav; Keystatic image fields are path-based (switch to `fields.image` +
-GitHub storage for drag-drop CMS uploads); PRD refresh; timeline additions from the
-latest CV (Edenred, McDonald's HQ placement). Pending owner action: enable Web
+on mobile nav; move Keystatic image fields from path-based to `fields.image` and
+switch the deployed `/keystatic` admin to GitHub storage for drag-drop CMS uploads;
+experience-timeline additions from the latest CV (Edenred, McDonald's HQ). Pending
+owner action: enable Web
 Analytics in the Vercel dashboard for data to appear.*
