@@ -37,7 +37,7 @@ export default function Interactions() {
 
     // ── Scroll reveal ──────────────────────────────────────────────────────
     const revealTargets = Array.from(
-      document.querySelectorAll<HTMLElement>('.section, .case, .tl-row, .logo-cell')
+      document.querySelectorAll<HTMLElement>('.section, .tl-row, .logo-cell')
     )
 
     if (prefersReduced) {
@@ -59,6 +59,80 @@ export default function Interactions() {
         io.observe(el)
       })
       cleanups.push(() => io.disconnect())
+    }
+
+    // ── Selected Work: per-card "deal in" ─────────────────────────────────
+    // Each card deals itself into place (rise + alternating tilt + settle) as it
+    // scrolls into view, so the motion is always on the card the reader is
+    // looking at. Reader-paced (scrubbed) and latched per card. No JS / reduced
+    // motion leaves the cards in their natural, fully-visible positions.
+    const workSection = document.querySelector<HTMLElement>('#work')
+    if (!prefersReduced && workSection) {
+      const cards = Array.from(workSection.querySelectorAll<HTMLElement>('.case'))
+      if (cards.length) {
+        const narrow = window.matchMedia('(max-width: 720px)').matches
+        const rise = narrow ? 40 : 56
+        const tiltDeg = narrow ? 3 : 5
+
+        // Key progress on each card's NATURAL document top, captured before any
+        // transform (reading a transformed rect would feed back on itself).
+        const state = cards.map((c, i) => ({
+          el: c,
+          top: 0,
+          tilt: (i % 2 === 0 ? -1 : 1) * tiltDeg,
+          done: false,
+        }))
+        const measure = () => {
+          state.forEach((s) => {
+            s.top = s.el.getBoundingClientRect().top + window.scrollY
+          })
+        }
+
+        const update = () => {
+          const vh2 = window.innerHeight
+          const enter = vh2 * 0.82 // card top here -> just entering (progress 0)
+          const settle = vh2 * 0.4 // card top here -> settled (progress 1)
+          state.forEach((s) => {
+            if (s.done) return
+            const viewTop = s.top - window.scrollY
+            const p = Math.max(0, Math.min(1, (enter - viewTop) / (enter - settle)))
+            const inv = Math.pow(1 - p, 3) // ease-out: 1 at the dealt pose, 0 settled
+            s.el.style.transform = `translateY(${(inv * rise).toFixed(1)}px) rotate(${(
+              inv * s.tilt
+            ).toFixed(2)}deg) scale(${(1 - inv * 0.06).toFixed(4)})`
+            s.el.style.opacity = `${(1 - inv * 0.6).toFixed(3)}`
+            if (p >= 1) {
+              // Settled: drop the inline overrides so the hover lift works again.
+              s.done = true
+              s.el.style.transform = ''
+              s.el.style.opacity = ''
+              s.el.style.transition = ''
+            }
+          })
+        }
+        const onResize = () => {
+          // Clear live transforms so measurement reads natural layout, then reapply.
+          state.forEach((s) => {
+            if (!s.done) s.el.style.transform = ''
+          })
+          measure()
+          update()
+        }
+
+        // Kill the base 300ms transition during the deal so cards track scroll
+        // 1:1; the ease-out lives in the progress mapping. Restored on settle.
+        cards.forEach((c) => {
+          c.style.transition = 'none'
+        })
+        measure()
+        update() // initial: below-fold cards get the dealt pose; in-view cards settle
+        window.addEventListener('scroll', update, { passive: true })
+        window.addEventListener('resize', onResize)
+        cleanups.push(() => {
+          window.removeEventListener('scroll', update)
+          window.removeEventListener('resize', onResize)
+        })
+      }
     }
 
     // ── Cursor-following blob + hero parallax (pointer devices only) ────────
