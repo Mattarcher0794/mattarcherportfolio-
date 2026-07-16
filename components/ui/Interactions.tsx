@@ -115,11 +115,14 @@ export default function Interactions() {
         const deal = () => {
           if (hasDealt) return
           hasDealt = true
-          cards.forEach((c) => c.classList.add('dealt'))
-          window.setTimeout(
-            () => cards.forEach(clearCard),
-            640 + (cards.length - 1) * 90 + 250
-          )
+          // Let the deck sit in view for a beat so it reads as a deck, then deal.
+          window.setTimeout(() => {
+            cards.forEach((c) => c.classList.add('dealt'))
+            window.setTimeout(
+              () => cards.forEach(clearCard),
+              720 + (cards.length - 1) * 110 + 250
+            )
+          }, 500)
         }
         // Key the trigger on the deck itself (the first card), not the section
         // top. The section opens with a kicker, heading and intro, so the deck
