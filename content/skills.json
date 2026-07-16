@@ -3,32 +3,80 @@
     {
       "heading": "Product craft",
       "skills": [
-        { "label": "Discovery & user research", "ai": false },
-        { "label": "Roadmapping", "ai": false },
-        { "label": "Experimentation & CRO", "ai": false },
-        { "label": "Agile delivery", "ai": false },
-        { "label": "Go-to-market", "ai": false },
-        { "label": "Stakeholder management", "ai": false },
-        { "label": "Coaching & mentoring", "ai": false }
+        {
+          "label": "Discovery & user research",
+          "ai": false
+        },
+        {
+          "label": "Roadmapping",
+          "ai": false
+        },
+        {
+          "label": "Experimentation & CRO",
+          "ai": false
+        },
+        {
+          "label": "Agile delivery",
+          "ai": false
+        },
+        {
+          "label": "Go-to-market",
+          "ai": false
+        },
+        {
+          "label": "Stakeholder management",
+          "ai": false
+        },
+        {
+          "label": "Coaching & mentoring",
+          "ai": false
+        }
       ]
     },
     {
       "heading": "AI & methods",
       "skills": [
-        { "label": "GenAI product development", "ai": true },
-        { "label": "Spec-driven development", "ai": false },
-        { "label": "AI-assisted workflows", "ai": false }
+        {
+          "label": "GenAI product development",
+          "ai": false
+        },
+        {
+          "label": "Spec-driven development",
+          "ai": false
+        },
+        {
+          "label": "AI-assisted workflows",
+          "ai": false
+        }
       ]
     },
     {
       "heading": "Industry",
       "skills": [
-        { "label": "Financial services", "ai": false },
-        { "label": "Retail & loyalty", "ai": false },
-        { "label": "Healthtech", "ai": false },
-        { "label": "QSR", "ai": false },
-        { "label": "Public sector", "ai": false },
-        { "label": "B2C & B2B", "ai": false }
+        {
+          "label": "Financial services",
+          "ai": false
+        },
+        {
+          "label": "Retail & loyalty",
+          "ai": false
+        },
+        {
+          "label": "Healthtech",
+          "ai": false
+        },
+        {
+          "label": "QSR",
+          "ai": false
+        },
+        {
+          "label": "Public sector",
+          "ai": false
+        },
+        {
+          "label": "B2C & B2B",
+          "ai": false
+        }
       ]
     }
   ]
