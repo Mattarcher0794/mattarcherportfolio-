@@ -6,7 +6,9 @@ export default async function Logos() {
   return (
     <section className="section" id="brands" aria-label="Brands">
       <div className="wrap">
-        <div className="section-num">[ 05 ] Brands I&apos;ve worked with</div>
+        <div className="section-num">
+          <span className="sn-num">05</span> Brands I&apos;ve worked with
+        </div>
         <h2 className="logos-h">
           Good <em>company.</em>
         </h2>

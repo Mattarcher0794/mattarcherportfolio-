@@ -91,14 +91,18 @@ Tailwind via `@theme inline`. There is no `tailwind.config.ts` — this project
 uses Tailwind v4's CSS-first config.
 
 ### Typography
-All fonts loaded via `next/font/google` in `app/layout.tsx`. Never use system fonts or generic fallbacks as primary fonts.
+Three families, all loaded via `next/font/google` in `app/layout.tsx`. Never use system fonts or generic fallbacks as primary fonts.
 
 | Role | Font | CSS var |
 |------|------|---------|
 | Display / headlines / stats | Bricolage Grotesque (800) | `--display` |
-| Body / labels / nav | Hanken Grotesk (400–700) | `--sans` |
-| Editorial accents (italic) | Instrument Serif | `--serif` |
-| Mono / tags / metadata | JetBrains Mono | `--mono` |
+| Body / labels / metadata / nav | Hanken Grotesk (400–700) | `--sans` |
+| Editorial accents + section kickers (italic) | Instrument Serif | `--serif` |
+
+**Metadata style (the "hybrid" label system).** There is no monospace font and no tracked-out uppercase labels. That combination read as AI-generated, so it was retired. Instead:
+- **Section kickers** (`.section-num`) are Instrument Serif editorial: a terracotta serif number followed by an italic label, e.g. "02 Selected work". Markup is `<span className="sn-num">` plus the label text plus an optional muted `<span className="sn-sub">`.
+- **Dense metadata** (case meta, tags, stat labels, timeline dates, skill headings, contact keys) is Hanken Grotesk, sentence case, with zero letter-spacing.
+- The hero name (`.hero-name`) is the one deliberate exception that keeps `text-transform: uppercase`.
 
 ### Spacing
 Base unit is 4px. Use Tailwind's spacing scale throughout. No arbitrary pixel values unless absolutely necessary and commented.
@@ -107,8 +111,10 @@ Base unit is 4px. Use Tailwind's spacing scale throughout. No arbitrary pixel va
 - Scroll-triggered reveals: `opacity 0→1` + `translateY 20px→0`, `700ms`, `cubic-bezier(.2,.7,.2,1)` (the `.reveal` / `.reveal.in` classes in `globals.css`)
 - Hover transitions: `200ms ease`
 - Organic "blob" shapes animate via the `blobPulse` keyframe
-- **Always** respect `prefers-reduced-motion` — when set, reveals resolve instantly and the cursor blob, hero parallax and stat count-up are disabled
-- Client-side behaviour (scroll-reveal, cursor-follow blob, hero parallax, animated stat counters) is centralised in `components/ui/Interactions.tsx`, a single progressive-enhancement layer. Section components stay server-rendered and fully visible without JS. Framer Motion remains available but the Bold Merge interactions are lightweight vanilla + IntersectionObserver.
+- **Timeline line-draw (scroll-scrub):** a moss spine fills as the timeline scrolls through the viewport and each row node ignites as the fill edge passes it. Driven by `--tl-progress` on `.tl` (set by a scroll handler in `Interactions.tsx`); the `.tl.is-scrubbing` class hands fill height and lit state over to scroll. The current role (top) ignites first, and the completed spine is the payoff.
+- **Hero drift (scroll-scrub):** the hero blobs drift up and out and fade as you scroll out of the hero. Pointer parallax writes `--px`/`--py` and the scroll drift writes `--sx`/`--sy`, composed in the `.hblob` transform so the two never clobber each other. Fine-pointer plus motion only.
+- **Always** respect `prefers-reduced-motion`. When set, reveals resolve instantly; the cursor blob, hero parallax, hero drift and stat count-up are disabled; and the timeline renders as a fully drawn line with every node lit.
+- Client-side behaviour (scroll-reveal, cursor-follow blob, hero parallax, hero drift, timeline line-draw, animated stat counters) is centralised in `components/ui/Interactions.tsx`, a single progressive-enhancement layer. Section components stay server-rendered and fully visible without JS. Framer Motion remains available but the Bold Merge interactions are lightweight vanilla + IntersectionObserver.
 
 ---
 
@@ -417,7 +423,7 @@ Do not skip steps. Do not build multiple sections in one session without committ
 ---
 
 *Last updated: July 2026 — adopted the "Bold Merge" design direction (warm light
-theme, Bricolage/Instrument Serif/Hanken/JetBrains Mono, hero stats, Lloyds as the
+theme, Bricolage/Instrument Serif/Hanken, hero stats, Lloyds as the
 headline case study). The homepage is fully built. `PRD.md` predates this pivot and
 still describes the earlier dark direction — treat this CLAUDE.md as authoritative
 for design/build decisions until the PRD is refreshed.*
@@ -429,6 +435,15 @@ About paragraphs) is now CMS-editable via the Keystatic **Home Copy** singleton 
 Keystatic **CV / Downloads** upload with a fallback; Vercel Analytics added
 (`<Analytics />` in `app/layout.tsx`); em dashes banned in user-facing copy. Hero stat
 counters use a fixed grid + `tabular-nums` so they no longer jitter while counting.*
+
+*July 2026 (motion + type session): retired JetBrains Mono, so the font system is now
+three families (Bricolage, Hanken, Instrument Serif). The tracked uppercase mono
+microlabels were replaced by a hybrid editorial label system (Instrument Serif section
+kickers plus sentence-case Hanken metadata) to remove an AI-generated tell; only the
+hero name stays uppercase. Added two scroll-scrub interactions in `Interactions.tsx`: a
+timeline line-draw (moss spine fills and nodes ignite on scroll) and a hero blob drift
+(blobs drift out and fade as the hero leaves). Both are reduced-motion-safe and fully
+static without JS.*
 
 *Follow-ups: case-study detail pages (`/work/<slug>`), SVG brand logos, PRD refresh,
 timeline additions from the latest CV (Edenred, McDonald's HQ placement). Pending

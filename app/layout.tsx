@@ -3,7 +3,6 @@ import {
   Bricolage_Grotesque,
   Hanken_Grotesk,
   Instrument_Serif,
-  JetBrains_Mono,
 } from 'next/font/google'
 import { headers } from 'next/headers'
 import { Analytics } from '@vercel/analytics/next'
@@ -36,13 +35,6 @@ const instrument = Instrument_Serif({
   subsets: ['latin'],
   weight: ['400'],
   style: ['normal', 'italic'],
-  display: 'swap',
-})
-
-const jetbrains = JetBrains_Mono({
-  variable: '--font-jetbrains',
-  subsets: ['latin'],
-  weight: ['400', '500', '700'],
   display: 'swap',
 })
 
@@ -82,7 +74,7 @@ export default function RootLayout({
   return (
     <html
       lang="en-GB"
-      className={`${bricolage.variable} ${hanken.variable} ${instrument.variable} ${jetbrains.variable}`}
+      className={`${bricolage.variable} ${hanken.variable} ${instrument.variable}`}
     >
       <body>
         {children}

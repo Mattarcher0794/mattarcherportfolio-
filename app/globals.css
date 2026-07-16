@@ -22,7 +22,6 @@
   --display: var(--font-bricolage), system-ui, sans-serif;
   --sans: var(--font-hanken), system-ui, sans-serif;
   --serif: var(--font-instrument), Georgia, serif;
-  --mono: var(--font-jetbrains), ui-monospace, monospace;
 }
 
 @theme inline {
@@ -36,7 +35,6 @@
   --font-display: var(--display);
   --font-sans: var(--sans);
   --font-serif: var(--serif);
-  --font-mono: var(--mono);
 }
 
 /* ─── Base ───────────────────────────────────────────────────────────────── */
@@ -295,10 +293,10 @@ nav.top.scrolled {
   opacity: 0;
 }
 .avail-label {
-  font-family: var(--serif);
-  font-size: 15px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.01em;
   color: var(--moss-deep);
 }
 .avail-sep {
@@ -351,11 +349,10 @@ nav.top.scrolled {
 .hero-role {
   position: relative;
   z-index: 1;
-  font-family: var(--mono);
-  font-weight: 700;
+  font-family: var(--sans);
+  font-weight: 600;
   font-size: clamp(15px, 1.6vw, 20px);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: 0;
   color: var(--moss);
   margin: 14px 0 0;
 }
@@ -367,7 +364,13 @@ nav.top.scrolled {
 .hblob {
   position: absolute;
   pointer-events: none;
-  will-change: transform;
+  will-change: transform, opacity;
+  /* Pointer parallax writes --px/--py; scroll drift writes --sx/--sy. Composing
+     both here keeps the two effects from clobbering each other's transform. */
+  transform: translate(
+    calc(var(--px, 0px) + var(--sx, 0px)),
+    calc(var(--py, 0px) + var(--sy, 0px))
+  );
   transition: transform 320ms ease-out;
   z-index: 0;
 }
@@ -458,9 +461,9 @@ nav.top.scrolled {
   font-feature-settings: "tnum" 1;
 }
 .stat-label {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.05em;
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0;
   color: var(--ink-dim);
   max-width: 20ch;
   line-height: 1.4;
@@ -707,23 +710,27 @@ nav.top.scrolled {
   border-top: 1px solid var(--rule);
 }
 .section-num {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--ink-mute);
-  margin-bottom: 22px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 20px;
+  letter-spacing: 0;
+  color: var(--ink-2);
+  margin-bottom: 26px;
   display: flex;
-  gap: 12px;
-  align-items: center;
+  gap: 10px;
+  align-items: baseline;
 }
-.section-num::before {
-  content: "";
-  width: 9px;
-  height: 9px;
-  background: var(--moss);
-  border-radius: 58% 42% 63% 37% / 41% 56% 44% 59%;
-  display: inline-block;
+.section-num .sn-num {
+  font-style: normal;
+  font-size: 21px;
+  color: var(--terracotta);
+}
+.section-num .sn-sub {
+  font-family: var(--sans);
+  font-style: normal;
+  font-size: 13px;
+  letter-spacing: 0;
+  color: var(--ink-mute);
 }
 
 /* ─── About ──────────────────────────────────────────────────────────────── */
@@ -767,10 +774,10 @@ nav.top.scrolled {
   font-weight: 700;
 }
 .about-edu {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0;
   color: var(--ink-mute);
   margin-top: 22px;
 }
@@ -841,10 +848,9 @@ nav.top.scrolled {
   align-items: center;
   gap: 16px;
   margin-bottom: 24px;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-family: var(--sans);
+  font-size: 13px;
+  letter-spacing: 0;
   color: var(--ink-mute);
 }
 .case-meta > span:last-child {
@@ -907,9 +913,10 @@ nav.top.scrolled {
   margin-bottom: 22px;
 }
 .tag {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.03em;
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 0;
   color: var(--ink-2);
   background: var(--bg);
   border: 1px solid var(--rule-2);
@@ -948,10 +955,10 @@ nav.top.scrolled {
   color: var(--ink);
 }
 .case-right .label {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0;
   opacity: 0.72;
   margin-bottom: 14px;
 }
@@ -995,10 +1002,9 @@ nav.top.scrolled {
   margin-bottom: 6px;
 }
 .case-right .secondary .l {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0;
   opacity: 0.8;
 }
 /* Peach panel: dark ink text with a terracotta dominant figure */
@@ -1048,13 +1054,12 @@ nav.top.scrolled {
   }
 }
 .skill-col h4 {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
+  font-family: var(--sans);
+  font-size: 14px;
+  letter-spacing: 0;
   color: var(--moss);
   margin: 0 0 18px;
-  font-weight: 500;
+  font-weight: 600;
   padding-bottom: 12px;
   border-bottom: 1px solid var(--rule-2);
 }
@@ -1111,45 +1116,78 @@ nav.top.scrolled {
   display: flex;
   flex-direction: column;
   border-top: 1px solid var(--rule-2);
+  position: relative;
+}
+/* Spine + fill: the scroll-drawn career line. Nodes sit on it and ignite as the
+   fill edge passes. Default (no JS / reduced-motion) = fully drawn + all lit;
+   the `.is-scrubbing` class (added by Interactions.tsx only when motion is
+   allowed) hands height + lit state over to scroll. */
+.tl-spine,
+.tl-fill {
+  position: absolute;
+  left: 12px;
+  width: 2px;
+  border-radius: 99px;
+  pointer-events: none;
+}
+.tl-spine {
+  top: 0;
+  bottom: 0;
+  background: var(--rule);
+}
+.tl-fill {
+  top: 0;
+  height: 100%;
+  background: var(--moss);
+  box-shadow: 0 6px 14px rgba(107, 122, 79, 0.45);
+  z-index: 1;
+}
+.tl.is-scrubbing .tl-fill {
+  height: calc(var(--tl-progress, 0) * 100%);
 }
 .tl-row {
   display: grid;
   grid-template-columns: 180px 1fr 1fr;
   gap: 28px;
-  padding: 28px 0;
+  padding: 28px 0 28px 40px;
   border-bottom: 1px solid var(--rule-2);
   align-items: baseline;
   transition: padding-left 300ms;
   position: relative;
 }
-.tl-row::before {
-  content: "";
+.tl-node {
   position: absolute;
-  left: 0;
+  left: 6px;
   top: 50%;
-  transform: translateY(-50%) scaleX(0);
-  width: 0;
-  height: 4px;
+  width: 14px;
+  height: 14px;
+  margin-top: -7px;
+  border-radius: 50%;
   background: var(--moss);
-  border-radius: 99px;
-  transition: transform 300ms ease, width 300ms ease;
-  transform-origin: left;
+  border: 2px solid var(--moss);
+  box-shadow: 0 0 0 6px rgba(107, 122, 79, 0.14);
+  z-index: 2;
+  transition: transform 260ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    background 260ms ease, border-color 260ms ease, box-shadow 260ms ease;
+}
+.tl.is-scrubbing .tl-row:not(.lit) .tl-node {
+  background: var(--bg);
+  border-color: var(--ink-mute);
+  transform: scale(0.55);
+  box-shadow: none;
 }
 .tl-row:hover {
-  padding-left: 20px;
-}
-.tl-row:hover::before {
-  transform: translateY(-50%);
-  width: 14px;
+  padding-left: 52px;
 }
 .tl-row.current {
   background: rgba(107, 122, 79, 0.07);
 }
 .tl-row.current .tl-role::after {
-  content: " · NOW";
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
+  content: " · Now";
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0;
   color: var(--moss);
   vertical-align: middle;
 }
@@ -1157,13 +1195,25 @@ nav.top.scrolled {
   .tl-row {
     grid-template-columns: 1fr;
     gap: 8px;
-    padding: 20px 0;
+    padding: 20px 0 20px 36px;
+  }
+  .tl-spine,
+  .tl-fill {
+    left: 10px;
+  }
+  .tl-node {
+    left: 4px;
+    box-shadow: 0 0 0 4px rgba(107, 122, 79, 0.12);
+  }
+  .tl-row:hover {
+    padding-left: 44px;
   }
 }
 .tl-date {
-  font-family: var(--mono);
+  font-family: var(--sans);
+  font-weight: 500;
   font-size: 13px;
-  letter-spacing: 0.03em;
+  letter-spacing: 0;
   color: var(--ink-dim);
 }
 .tl-role {
@@ -1269,11 +1319,11 @@ nav.top.scrolled {
   position: absolute;
   top: 12px;
   left: 14px;
-  font-family: var(--mono);
-  font-size: 10px;
+  font-family: var(--sans);
+  font-size: 11px;
   color: var(--ink-mute);
-  letter-spacing: 0.06em;
-  font-weight: 400;
+  letter-spacing: 0;
+  font-weight: 500;
 }
 .logo-cell:hover .index {
   color: var(--peach);
@@ -1308,9 +1358,6 @@ nav.top.scrolled {
 }
 .contact-block .section-num {
   color: rgba(247, 237, 228, 0.55);
-}
-.contact-block .section-num::before {
-  background: var(--peach);
 }
 .contact-h {
   font-family: var(--display);
@@ -1392,10 +1439,10 @@ nav.top.scrolled {
   }
 }
 .contact-foot .k {
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0;
   color: rgba(247, 237, 228, 0.55);
   margin-bottom: 8px;
 }
@@ -1415,9 +1462,9 @@ nav.top.scrolled {
 footer {
   padding: 30px 0;
   border-top: 1px solid var(--rule);
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.06em;
+  font-family: var(--sans);
+  font-size: 13px;
+  letter-spacing: 0;
   color: var(--ink-dim);
 }
 footer .row {

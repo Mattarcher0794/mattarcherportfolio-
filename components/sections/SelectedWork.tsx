@@ -6,7 +6,10 @@ export default async function SelectedWork() {
   return (
     <section className="section" id="work" aria-label="Selected work">
       <div className="wrap">
-        <div className="section-num">[ 02 ] Selected Work · 03 case studies</div>
+        <div className="section-num">
+          <span className="sn-num">02</span> Selected work{' '}
+          <span className="sn-sub">· 03 case studies</span>
+        </div>
         <h2 className="work-head">
           Three things <em>I&apos;m proud of.</em>
         </h2>

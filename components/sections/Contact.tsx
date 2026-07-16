@@ -10,7 +10,9 @@ export default async function Contact() {
     <section className="section" id="contact" aria-label="Contact">
       <div className="wrap">
         <div className="contact-block">
-          <div className="section-num">[ 06 ] Contact</div>
+          <div className="section-num">
+            <span className="sn-num">06</span> Contact
+          </div>
           <h2 className="contact-h">
             {site.contactHeadlineLead} <em>{site.contactHeadlineEm}</em>
           </h2>

@@ -119,7 +119,8 @@ export default function Interactions() {
         })
       )
 
-      // Hero blob parallax
+      // Hero blob parallax (pointer) + drift (scroll). Pointer writes --px/--py,
+      // scroll writes --sx/--sy; the .hblob transform composes both in CSS.
       const hero = document.querySelector<HTMLElement>('.hero')
       const hblobs = Array.from(document.querySelectorAll<HTMLElement>('.hblob'))
       if (hero && hblobs.length) {
@@ -129,19 +130,50 @@ export default function Interactions() {
           const ny = (e.clientY - r.top) / r.height - 0.5
           hblobs.forEach((b, i) => {
             const depth = (i + 1) * 10
-            b.style.transform = `translate(${nx * depth}px, ${ny * depth}px)`
+            b.style.setProperty('--px', `${nx * depth}px`)
+            b.style.setProperty('--py', `${ny * depth}px`)
           })
         }
         const onHeroLeave = () => {
           hblobs.forEach((b) => {
-            b.style.transform = 'translate(0, 0)'
+            b.style.setProperty('--px', '0px')
+            b.style.setProperty('--py', '0px')
           })
         }
         hero.addEventListener('mousemove', onHeroMove)
         hero.addEventListener('mouseleave', onHeroLeave)
+
+        // Scroll drift: as the hero scrolls away, blobs ease up-and-out and fade,
+        // giving the page weight. The quietest of the three effects — the
+        // headline itself never moves.
+        let heroTicking = false
+        const updateHeroDrift = () => {
+          heroTicking = false
+          const p = Math.max(
+            0,
+            Math.min(1, -hero.getBoundingClientRect().top / (hero.offsetHeight || 1))
+          )
+          hblobs.forEach((b, i) => {
+            b.style.setProperty('--sy', `${-(p * (46 + i * 16))}px`)
+            b.style.setProperty('--sx', `${p * (20 + i * 12)}px`)
+            b.style.opacity = (1 - p * 0.5).toFixed(3)
+          })
+        }
+        const onHeroDriftScroll = () => {
+          if (!heroTicking) {
+            heroTicking = true
+            requestAnimationFrame(updateHeroDrift)
+          }
+        }
+        window.addEventListener('scroll', onHeroDriftScroll, { passive: true })
+        window.addEventListener('resize', onHeroDriftScroll)
+        updateHeroDrift()
+
         cleanups.push(() => {
           hero.removeEventListener('mousemove', onHeroMove)
           hero.removeEventListener('mouseleave', onHeroLeave)
+          window.removeEventListener('scroll', onHeroDriftScroll)
+          window.removeEventListener('resize', onHeroDriftScroll)
         })
       }
     }
@@ -265,6 +297,53 @@ export default function Interactions() {
       timers.push(t)
     })
     cleanups.push(() => timers.forEach((t) => clearTimeout(t)))
+
+    // ── Timeline line-draw (scroll-scrub) ──────────────────────────────────
+    // The moss spine fills as the timeline travels through the viewport, and
+    // each row's node ignites as the fill edge passes its centre. Without this
+    // (no JS or reduced motion) the CSS default is a fully-drawn line with every
+    // node lit, so the section is always complete and correct.
+    const tl = document.querySelector<HTMLElement>('.tl')
+    if (tl) {
+      const tlRows = Array.from(tl.querySelectorAll<HTMLElement>('.tl-row'))
+      if (prefersReduced) {
+        tl.style.setProperty('--tl-progress', '1')
+        tlRows.forEach((r) => r.classList.add('lit'))
+      } else {
+        tl.classList.add('is-scrubbing')
+        let tlTicking = false
+        const updateTl = () => {
+          tlTicking = false
+          const rect = tl.getBoundingClientRect()
+          const vh = window.innerHeight
+          // progress 0 when the top reaches 78% down the viewport; 1 when the
+          // bottom reaches 45% up — so the last node fires while still on screen.
+          const startTop = vh * 0.78
+          const endBottom = vh * 0.45
+          const total = rect.height + startTop - endBottom
+          const p = Math.max(0, Math.min(1, (startTop - rect.top) / total))
+          tl.style.setProperty('--tl-progress', p.toFixed(4))
+          const edge = p * rect.height
+          tlRows.forEach((r) => {
+            const centre = r.offsetTop + r.offsetHeight / 2
+            r.classList.toggle('lit', edge >= centre)
+          })
+        }
+        const onTlScroll = () => {
+          if (!tlTicking) {
+            tlTicking = true
+            requestAnimationFrame(updateTl)
+          }
+        }
+        window.addEventListener('scroll', onTlScroll, { passive: true })
+        window.addEventListener('resize', onTlScroll)
+        updateTl()
+        cleanups.push(() => {
+          window.removeEventListener('scroll', onTlScroll)
+          window.removeEventListener('resize', onTlScroll)
+        })
+      }
+    }
 
     return () => cleanups.forEach((fn) => fn())
   }, [])
