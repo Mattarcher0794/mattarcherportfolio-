@@ -20,9 +20,12 @@ export default async function Logos() {
               <div className="logo-cell" key={brand.logo}>
                 <span className="index">{String(i + 1).padStart(2, '0')}</span>
                 {mark ? (
-                  <span className="logo-mark" role="img" aria-label={brand.logo}>
-                    {mark}
-                  </span>
+                  <span
+                    className="logo-mark"
+                    role="img"
+                    aria-label={brand.logo}
+                    dangerouslySetInnerHTML={{ __html: mark }}
+                  />
                 ) : (
                   brand.logo
                 )}
