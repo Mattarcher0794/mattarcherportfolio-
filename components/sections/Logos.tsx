@@ -15,13 +15,15 @@ export default async function Logos() {
         </h2>
         <div className="logo-grid">
           {brands.map((brand, i) => {
-            const mark = brandLogos[brandSlug(brand.logo)]
+            const slug = brandSlug(brand.logo)
+            const mark = brandLogos[slug]
             return (
               <div className="logo-cell" key={brand.logo}>
                 <span className="index">{String(i + 1).padStart(2, '0')}</span>
                 {mark ? (
                   <span
                     className="logo-mark"
+                    data-brand={slug}
                     role="img"
                     aria-label={brand.logo}
                     dangerouslySetInnerHTML={{ __html: mark }}
