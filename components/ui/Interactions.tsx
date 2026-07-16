@@ -74,72 +74,62 @@ export default function Interactions() {
         const rotStep = narrow ? 2 : 4
         const scaleStep = narrow ? 0.03 : 0.05
         const baseTop = cards[0].offsetTop
+        // Per-card deck geometry: how far to collapse up onto the top card, the
+        // fan tilt, and how much to shrink / fade behind the leader.
+        const deck = cards.map((c, i) => ({
+          y: baseTop + i * peek - c.offsetTop,
+          rot: i === 0 ? 0 : i % 2 === 1 ? rotStep : -rotStep,
+          scaleAmt: i * scaleStep,
+          opAmt: i * 0.16,
+        }))
 
-        cards.forEach((c, i) => {
-          const collapseY = baseTop + i * peek - c.offsetTop
-          const rot = i === 0 ? 0 : i % 2 === 1 ? rotStep : -rotStep
-          c.style.setProperty('--deal-y', `${collapseY}px`)
-          c.style.setProperty('--deal-rot', `${rot}deg`)
-          c.style.setProperty('--deal-scale', `${(1 - i * scaleStep).toFixed(3)}`)
-          c.style.setProperty('--deal-op', `${(1 - i * 0.16).toFixed(3)}`)
-          c.style.setProperty('--deal-i', `${i}`)
-          c.style.zIndex = `${cards.length - i}`
-        })
-
-        // Collapse into the deck now. On a normal load the section is below the
-        // fold, so this is invisible; suppress the transition so only the deal
-        // (not the collapse) ever animates.
-        cards.forEach((c) => {
-          c.style.transition = 'none'
-          c.classList.add('deck')
-        })
-        void workSection.offsetHeight // reflow to lock the deck in instantly
-        cards.forEach((c) => {
-          c.style.transition = ''
-        })
-
-        const clearCard = (c: HTMLElement) => {
-          c.classList.remove('deck', 'dealt')
-          c.style.zIndex = ''
-          ;['--deal-y', '--deal-rot', '--deal-scale', '--deal-op', '--deal-i'].forEach(
-            (p) => c.style.removeProperty(p)
-          )
-        }
-
-        // Deal when the section rises into the lower part of the viewport. A
-        // scroll listener (not IntersectionObserver) so the initial synchronous
-        // check also covers the case where the section is already on screen at
-        // load (e.g. a restored scroll position). Fires once, then strips the
-        // deck/deal classes so the hover lift resumes.
-        let hasDealt = false
-        const deal = () => {
-          if (hasDealt) return
-          hasDealt = true
-          // Let the deck sit in view for a beat so it reads as a deck, then deal.
-          window.setTimeout(() => {
-            cards.forEach((c) => c.classList.add('dealt'))
-            window.setTimeout(
-              () => cards.forEach(clearCard),
-              720 + (cards.length - 1) * 110 + 250
-            )
-          }, 500)
-        }
-        // Key the trigger on the deck itself (the first card), not the section
-        // top. The section opens with a kicker, heading and intro, so the deck
-        // sits well below the section top; triggering on the section would deal
-        // the cards while they are still off-screen.
-        const onDealScroll = () => {
-          if (hasDealt) return
-          if (cards[0].getBoundingClientRect().top < window.innerHeight * 0.75) {
-            deal()
+        // Scroll-scrubbed deal: the deck deals out as the reader scrolls it up
+        // through a band, so the motion is paced by (and always seen by) them.
+        // Progress latches, so once dealt the cards never re-stack on the way
+        // back up. Each card is staggered and eased so its landing reads.
+        const STAGGER = 0.16
+        const denom = 1 - (cards.length - 1) * STAGGER
+        let latched = 0
+        let done = false
+        const applyDeal = () => {
+          if (done) return
+          const vh2 = window.innerHeight
+          const start = vh2 * 0.72 // deck-top position where the deal begins
+          const band = vh2 * 0.6 // scroll distance to fully deal (larger = slower)
+          const raw = (start - cards[0].getBoundingClientRect().top) / band
+          latched = Math.max(latched, Math.min(1, Math.max(0, raw)))
+          cards.forEach((c, i) => {
+            const cp = Math.max(0, Math.min(1, (latched - i * STAGGER) / denom))
+            const inv = Math.pow(1 - cp, 3) // ease-out: 1 at deck, 0 when settled
+            const d = deck[i]
+            c.style.transform = `translateY(${(d.y * inv).toFixed(1)}px) rotate(${(
+              d.rot * inv
+            ).toFixed(2)}deg) scale(${(1 - inv * d.scaleAmt).toFixed(4)})`
+            c.style.opacity = `${(1 - inv * d.opAmt).toFixed(3)}`
+            c.style.zIndex = `${cards.length - i}`
+          })
+          if (latched >= 1) {
+            // Fully dealt: drop the inline overrides so the hover lift works again.
+            done = true
+            cards.forEach((c) => {
+              c.style.transform = ''
+              c.style.opacity = ''
+              c.style.zIndex = ''
+              c.style.transition = ''
+            })
           }
         }
-        window.addEventListener('scroll', onDealScroll, { passive: true })
-        window.addEventListener('resize', onDealScroll)
-        onDealScroll()
+        // Kill the base 300ms transition during the scrub so the cards track
+        // scroll 1:1; the ease-out lives in the progress mapping. Restored on done.
+        cards.forEach((c) => {
+          c.style.transition = 'none'
+        })
+        applyDeal() // initial state: deck when below the fold, or paced-to-position if already in view
+        window.addEventListener('scroll', applyDeal, { passive: true })
+        window.addEventListener('resize', applyDeal)
         cleanups.push(() => {
-          window.removeEventListener('scroll', onDealScroll)
-          window.removeEventListener('resize', onDealScroll)
+          window.removeEventListener('scroll', applyDeal)
+          window.removeEventListener('resize', applyDeal)
         })
       }
     }
