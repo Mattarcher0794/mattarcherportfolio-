@@ -38,7 +38,7 @@
       "skills": [
         {
           "label": "GenAI product development",
-          "ai": true
+          "ai": false
         },
         {
           "label": "Responsible AI (HITL & evals)",
