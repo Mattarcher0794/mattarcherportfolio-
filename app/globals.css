@@ -1317,6 +1317,46 @@ nav.top.scrolled {
   background: var(--moss);
   color: var(--surface);
 }
+/* Inline brand logos (lib/brandLogos.tsx). fill:currentColor means they inherit
+   the cell's ink colour and flip to the surface colour on the moss hover. */
+.logo-cell .logo-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.logo-cell .logo-mark svg {
+  width: auto;
+  height: 30px;
+  max-width: 82%;
+  color: inherit;
+}
+/* Optical balance: wide wordmarks get a shorter height so they don't dominate;
+   compact / square marks get more height so they don't look tiny. */
+.logo-cell .logo-mark[data-brand="british-airways"] svg {
+  height: 19px;
+}
+.logo-cell .logo-mark[data-brand="lloyds-banking-group"] svg {
+  height: 34px;
+}
+.logo-cell .logo-mark[data-brand="hca"] svg {
+  height: 32px;
+}
+.logo-cell .logo-mark[data-brand="and-digital"] svg {
+  height: 24px;
+}
+.logo-cell .logo-mark[data-brand="edenred"] svg {
+  height: 46px;
+}
+.logo-cell .logo-mark[data-brand="subway"] svg {
+  height: 30px;
+}
+.logo-cell .logo-mark[data-brand="wagamama"] svg {
+  height: 40px;
+}
+.logo-cell .logo-mark[data-brand="mcdonalds-hq"] svg {
+  height: 44px;
+}
 .logo-cell .index {
   position: absolute;
   top: 12px;
