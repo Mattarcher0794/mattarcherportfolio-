@@ -5,7 +5,9 @@ export default async function Skills() {
   return (
     <section className="section" id="skills" aria-label="Skills and expertise">
       <div className="wrap">
-        <div className="section-num">[ 03 ] Skills &amp; Expertise</div>
+        <div className="section-num">
+          <span className="sn-num">03</span> Skills &amp; expertise
+        </div>
         <h2 className="skills-h">
           What I do, and <em>where.</em>
         </h2>
