@@ -1317,6 +1317,20 @@ nav.top.scrolled {
   background: var(--moss);
   color: var(--surface);
 }
+/* Inline brand logos (lib/brandLogos.tsx). fill:currentColor means they inherit
+   the cell's ink colour and flip to the surface colour on the moss hover. */
+.logo-cell .logo-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.logo-cell .logo-mark svg {
+  height: 34px;
+  width: auto;
+  max-width: 78%;
+  color: inherit;
+}
 .logo-cell .index {
   position: absolute;
   top: 12px;
