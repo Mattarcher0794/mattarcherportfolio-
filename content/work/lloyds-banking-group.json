@@ -26,5 +26,25 @@
       "value": "−40%",
       "label": "Time to credit decision"
     }
-  ]
+  ],
+  "challenge": {
+    "body": "I inherited a key strategic outcome on Lloyds' Commercial Lending Platform, leading a cross-functional team of around 80 across product, engineering, design and data. The brief was demanding on its own: build the bank's first automated SME lending decisioning, and a GenAI financial-spreading product, both visible at COO level.\n\nThe environment was harder than the brief. Platform teams were dysfunctional and openly hostile to each other, dates were dictated top down, leadership was mis-joined, and priorities conflicted week to week.",
+    "images": []
+  },
+  "approach": {
+    "body": "I had two problems to solve at once, delivery and people. On delivery, I chose to build the SME decisioning capability incrementally rather than as a big-bang launch, so real value reached customers early and we could learn while we built. On the GenAI product, I insisted on a robust human-in-the-loop workflow and a proper evaluation harness before we scaled anything, so the output could be trusted.\n\nUnderneath both, I worked to turn the hostility between platform teams into a group that actually delivered together.",
+    "images": []
+  },
+  "whatWeBuilt": {
+    "body": "The bank's first automated SME decisioning workflow, shipped in increments so lending teams saw value from month one. Alongside it, a GenAI financial-spreading product with human-in-the-loop review and evaluations built in from the start, not bolted on later.",
+    "images": []
+  },
+  "outcomes": {
+    "body": "The automated SME decisioning workflow generated **£5.8M in its first month live**, measured on launch-month data and cleared by the team to share. Delivery was recognised at COO level. And the teams that started out hostile to each other now work together well, which I am as proud of as the number.",
+    "images": []
+  },
+  "learnings": {
+    "body": "In a top-down, politically charged environment, your delivery strategy is also a leadership tool. Shipping incrementally bought trust that dictated dates never could. And with GenAI, the discipline of evals and human-in-the-loop before scaling is not a brake on delivery, it is the thing that makes the value safe to claim.",
+    "images": []
+  }
 }

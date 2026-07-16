@@ -20,6 +20,43 @@ const secondaryStat = fields.object(
   { label: 'Secondary stat' }
 )
 
+// A single image embedded in a case-study narrative section. `src` is a plain
+// path under /public (e.g. /images/work/wagamama-home.png) so it renders
+// directly and stays predictable to author by hand; can be upgraded to a
+// drag-drop `fields.image` upload later without changing the read layer.
+const caseImage = fields.object(
+  {
+    src: fields.text({
+      label: 'Image path',
+      description: 'Path under /public, e.g. /images/work/wagamama-home.png',
+    }),
+    alt: fields.text({ label: 'Alt text', description: 'Describe the screen for accessibility' }),
+    caption: fields.text({ label: 'Caption (optional)' }),
+  },
+  { label: 'Image' }
+)
+
+// One narrative section of a case-study detail page. Rendered first-person,
+// through renderBody (blank line = new paragraph, **bold** / *italic* inline).
+// Images are optional, so a prose-only case study (Lloyds) simply leaves them
+// empty and the same template carries it.
+const caseSection = (label: string) =>
+  fields.object(
+    {
+      body: fields.text({
+        label: 'Narrative',
+        description:
+          'First person, Matt’s voice. Leave a blank line between paragraphs. **bold** and *italic* are supported. No em dashes.',
+        multiline: true,
+      }),
+      images: fields.array(caseImage, {
+        label: 'Images (optional)',
+        itemLabel: (p) => p.fields.alt.value || p.fields.src.value || 'image',
+      }),
+    },
+    { label }
+  )
+
 const footItem = fields.object(
   {
     k: fields.text({ label: 'Key', description: 'e.g. Email, Based in' }),
@@ -105,6 +142,14 @@ export default config({
           label: 'Secondary stats (2)',
           itemLabel: (p) => p.fields.value.value,
         }),
+        // ── Detail-page narrative (fixed five sections, exact labels/order) ──
+        // Powers /work/<slug>. Each section is optional at the schema level so a
+        // partly-authored study still builds; the page skips empty sections.
+        challenge: caseSection('The Challenge'),
+        approach: caseSection('Approach'),
+        whatWeBuilt: caseSection('What We Built'),
+        outcomes: caseSection('Outcomes'),
+        learnings: caseSection('Learnings'),
       },
     }),
     experience: collection({

@@ -10,13 +10,19 @@ import Logos from '@/components/sections/Logos'
 import Contact from '@/components/sections/Contact'
 import Interactions from '@/components/ui/Interactions'
 import { getCvHref, getHomeCopy } from '@/lib/siteData'
+import { getCaseStudies } from '@/lib/caseStudies'
 
 export default async function Home() {
-  const [cvHref, homeCopy] = await Promise.all([getCvHref(), getHomeCopy()])
+  const [cvHref, homeCopy, caseStudies] = await Promise.all([
+    getCvHref(),
+    getHomeCopy(),
+    getCaseStudies(),
+  ])
+  const navWork = caseStudies.map((c) => ({ slug: c.slug, company: c.company }))
 
   return (
     <>
-      <Navigation cvHref={cvHref} />
+      <Navigation cvHref={cvHref} caseStudies={navWork} />
       <main>
         <Hero cvHref={cvHref} heroBody={homeCopy.heroBody} />
         <Marquee />

@@ -26,5 +26,57 @@
       "value": "+58%",
       "label": "Visit frequency, post-launch"
     }
-  ]
+  ],
+  "challenge": {
+    "body": "Wagamama had no loyalty scheme while its rivals did. They needed to lift visit frequency and build a relationship with guests beyond the four walls of the restaurant, but there was no proven model for what loyalty should even mean for a brand built on food and hospitality.",
+    "images": []
+  },
+  "approach": {
+    "body": "I started with discovery to set the loyalty strategy, rather than jumping straight to features. We ran dual-track agile with heavy user research, and chose a flexible content platform so the product could keep evolving after launch.\n\nThe insight that shaped everything was to design the loyalty loop around the real in-restaurant moment: check in at your table, earn a stamp, redeem a reward, all while you are actually there.",
+    "images": [
+      {
+        "src": "/images/work/wagamama-stamps.jpg",
+        "alt": "Soul Club how-it-works screen explaining how stamps are collected",
+        "caption": "The loop, explained in the app: collect stamps, then redeem rewards."
+      }
+    ]
+  },
+  "whatWeBuilt": {
+    "body": "I led a cross-functional team of 30+ from inception, and owned the proposition design and the loyalty mechanic itself. Soul Club is a check-in flow tied to your restaurant and table, a stamp-based rewards engine with redemption and minimum-spend logic, a content-led feed of recipes, events and editorial, and an ordering and split-bill flow with a web-wrapped payment journey.\n\nThe app launched around nine months after build began.",
+    "images": [
+      {
+        "src": "/images/work/wagamama-home.png",
+        "alt": "Soul Club app home screen showing rewards, check-in and content",
+        "caption": "The club home: rewards, content and check-in in one place."
+      },
+      {
+        "src": "/images/work/wagamama-checkin.png",
+        "alt": "Check-in screen selecting the restaurant and table number",
+        "caption": "Check in at your table to start earning."
+      },
+      {
+        "src": "/images/work/wagamama-rewards.jpg",
+        "alt": "Rewards wallet showing an available reward ready to redeem",
+        "caption": "Rewards live in a wallet, ready to redeem."
+      },
+      {
+        "src": "/images/work/wagamama-order.png",
+        "alt": "Your order screen with reward redemption, stamp logic and split bill",
+        "caption": "Redeem, order and split the bill in one flow."
+      },
+      {
+        "src": "/images/work/wagamama-events.jpg",
+        "alt": "Soul Club event details screen for an in-restaurant event",
+        "caption": "Events and content give a reason to come back."
+      }
+    ]
+  },
+  "outcomes": {
+    "body": "Soul Club launched at **№1 on the iOS App Store for Food & Drink**. Over a million people signed up in the first nine months, and visit frequency rose **58%** after launch. Floor staff folded check-in into the way they welcomed guests to the table, so the product became part of the actual dining ritual rather than a separate app.",
+    "images": []
+  },
+  "learnings": {
+    "body": "Loyalty is not points, it is a reason to come back. The content feed drove incremental visits as much as the rewards did. And designing for the physical table moment, instead of a generic loyalty app, is what made people actually use it.",
+    "images": []
+  }
 }
