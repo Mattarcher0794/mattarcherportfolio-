@@ -1342,6 +1342,9 @@ nav.top.scrolled {
 .logo-cell .logo-mark[data-brand="hca"] svg {
   height: 32px;
 }
+.logo-cell .logo-mark[data-brand="and-digital"] svg {
+  height: 24px;
+}
 .logo-cell .logo-mark[data-brand="subway"] svg {
   height: 30px;
 }
