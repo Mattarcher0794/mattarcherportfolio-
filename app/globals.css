@@ -1152,7 +1152,7 @@ nav.top.scrolled {
   padding: 28px 0 28px 40px;
   border-bottom: 1px solid var(--rule-2);
   align-items: baseline;
-  transition: padding-left 300ms;
+  transition: background 200ms ease;
   position: relative;
 }
 .tl-node {
@@ -1176,8 +1176,8 @@ nav.top.scrolled {
   transform: scale(0.55);
   box-shadow: none;
 }
-.tl-row:hover {
-  padding-left: 52px;
+.tl-row:not(.current):hover {
+  background: rgba(107, 122, 79, 0.05);
 }
 .tl-row.current {
   background: rgba(107, 122, 79, 0.07);
@@ -1204,9 +1204,6 @@ nav.top.scrolled {
   .tl-node {
     left: 4px;
     box-shadow: 0 0 0 4px rgba(107, 122, 79, 0.12);
-  }
-  .tl-row:hover {
-    padding-left: 44px;
   }
 }
 .tl-date {
@@ -1242,7 +1239,7 @@ nav.top.scrolled {
   display: block;
 }
 .tl-projects .empty {
-  color: var(--ink-mute);
+  color: var(--ink-dim);
 }
 
 /* ─── Brand Logos ────────────────────────────────────────────────────────── */
