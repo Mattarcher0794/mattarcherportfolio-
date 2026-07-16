@@ -3,7 +3,12 @@
   "order": 2,
   "date": "June 2018 – Aug 2023",
   "company": "AND Digital · London",
-  "projects": ["Wagamama", "HCA Healthcare", "Subway · British Airways · Thomas Cook"],
+  "projects": [
+    "Wagamama",
+    "Subway",
+    "British Airways",
+    "Thomas Cook"
+  ],
   "projectsMuted": false,
   "current": false
 }
