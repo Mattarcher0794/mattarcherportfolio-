@@ -1,8 +1,25 @@
 {
   "stats": [
-    { "target": "5.8", "prefix": "£", "suffix": "M+", "label": "Generated in new lending, month one at Lloyds" },
-    { "target": "1", "prefix": "", "suffix": "M+", "label": "App signups driven in 9 months at Wagamama" },
-    { "target": "41", "prefix": "", "suffix": "%", "label": "Growth in online bookings, year one at HCA Healthcare" },
-    { "target": "9", "prefix": "", "suffix": "+", "label": "Years leading product teams" }
+    {
+      "target": "5.8",
+      "prefix": "£",
+      "suffix": "M+",
+      "label": "Generated in new lending at Lloyds"
+    },
+    {
+      "target": "1",
+      "suffix": "M+",
+      "label": "App signups driven in 9 months at Wagamama"
+    },
+    {
+      "target": "41",
+      "suffix": "%",
+      "label": "Growth in online bookings, year one at HCA Healthcare"
+    },
+    {
+      "target": "9",
+      "suffix": "+",
+      "label": "Years leading product teams"
+    }
   ]
 }
