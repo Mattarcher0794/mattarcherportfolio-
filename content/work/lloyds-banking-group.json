@@ -28,7 +28,7 @@
     }
   ],
   "challenge": {
-    "body": "I inherited a key strategic outcome on Lloyds' Commercial Lending Platform, leading a cross-functional team of around 80 across product, engineering, design and data. The brief was demanding on its own: build the bank's first automated SME lending decisioning, and a GenAI financial-spreading product, both visible at COO level.\n\nThe environment was harder than the brief. Platform teams were dysfunctional and openly hostile to each other, dates were dictated top down, leadership was mis-joined, and priorities conflicted week to week.",
+    "body": "I picked up a key strategic outcome on Lloyds' Commercial Lending Platform, leading around 80 people across product, engineering, design, credit and data. The brief was demanding enough on its own: build the bank's first automated SME decisioning across secured and unsecured lending, plus a GenAI financial spreading product, both visible at COO level.\n\nThe harder problem was that the platform teams were not yet working as one. Dates came top down, priorities moved week to week, and trust between the delivery groups was thin. Fixing that was not a side quest, it was the precondition for shipping anything.",
     "images": []
   },
   "approach": {
@@ -40,7 +40,7 @@
     "images": []
   },
   "outcomes": {
-    "body": "The automated SME decisioning workflow generated **£5.8M in its first month live**, measured on launch-month data and cleared by the team to share. Delivery was recognised at COO level. And the teams that started out hostile to each other now work together well, which I am as proud of as the number.",
+    "body": "The automated decisioning workflow generated **£5.8M** in its first month live, and automated acceptance went from nothing to **half of all applications**. It shipped incrementally across payment lines, charge cards and credit cards, then extended to overdrafts and term lending, so lending teams saw value from the first release rather than the last.\n\nThe GenAI financial spreading product is now used across the entire 200-person trading relationship manager population, having gone from pilot to full rollout on the strength of the feedback loop rather than a launch date.\n\nDelivery was recognised at COO level. And the teams that started out pulling in different directions now work together properly, which I am as proud of as the numbers.",
     "images": []
   },
   "learnings": {
