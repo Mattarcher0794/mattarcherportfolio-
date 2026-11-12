@@ -1,5 +1,6 @@
 {
   "default": {
+    "heroTag": "November '26",
     "heroLocation": "London, UK",
     "contactHeadlineLead": "Let's work",
     "contactHeadlineEm": "together.",
@@ -18,6 +19,7 @@
     ]
   },
   "au": {
+    "heroTag": "November '26",
     "heroLocation": "Sydney, NSW",
     "contactHeadlineLead": "Let's talk",
     "contactHeadlineEm": "Sydney.",
